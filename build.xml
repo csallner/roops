@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Author csallner@uta.edu (Christoph Csallner)
+-->
+
+<project basedir="." default="backup" name="Roops">
+
+  <!-- inc for major change -->
+  <property name="version" value="0.1" /> 
+	<!-- TODO: Include the proper license files -->
+	
+	<property name="src-benchmarks-roops" value="src-benchmarks-roops"/>
+	<property name="src-benchmarks-cs" value="src-benchmarks-cs"/>
+	<property name="src-benchmarks-java" value="src-benchmarks-java"/>
+	
+	<property name="src-converter-java" value="src-converter-java"/>
+	<property name="src-generator-java" value="src-generator-java"/>
+	<property name="src-utils-java" value="src-utils-java"/>
+	
+	<property name="test-converter" value="test-converter"/>  
+	
+  <property name="bin-java" value="bin-java"/>	
+	<property name="release" value="release" />
+
+  <path id="project.classpath">
+		<pathelement location="${bin-java}" />
+  </path>
+
+
+ <!-- Init --> 
+ 
+  <target name="init">
+    <buildnumber />
+		<mkdir dir="${release}"/>
+  </target>
+	
+	<target name="init-build" depends="init">
+		<mkdir dir="${bin-java}"/>
+  </target>
+	
+	
+  <!-- Build the Roops to Java converter --> 
+	  
+  <target name="converter" depends="init-build">
+    <javac destdir="${bin-java}" debug="true">
+      <src path="${src-converter-java}" />
+      <classpath refid="project.classpath" />
+    </javac>
+  </target>
+	
+	<target name="roops2java" depends="converter">
+		<java classname="roops.util.Converter" 
+			fork="true"
+      classpath="${bin-java}">
+			<arg line="src-benchmarks-roops src-benchmarks-java roops2java.txt java"/>
+    </java>
+	</target>
+	
+	<target name="benchmarks" depends="roops2java">
+    <javac destdir="${bin-java}" debug="true">
+      <src path="${src-utils-java}" />
+      <src path="${src-benchmarks-java}" />
+      <classpath refid="project.classpath" />
+    </javac>
+  </target>
+
+	
+	
+  <target name="release" depends="benchmarks">
+    <jar destfile="${release}/roops-${version}.${build.number}.jar">
+      <fileset dir="${bin-java}" />
+    </jar>
+  </target>
+	
+	
+	<!-- Backup: backup source files --> 
+	
+  <target name="backup" depends="init">
+    <tar destfile="${release}/roops-${version}.${build.number}-all.tar">
+      <tarfileset dir="${basedir}">
+      	<include name="${src-benchmarks-roops}/" />
+				<include name="${src-benchmarks-cs}/" />
+				<include name="${src-benchmarks-java}/" />
+      	<include name="${src-converter-java}/" />
+				<include name="${src-generator-java}/" />
+      	<include name="${src-utils-java}/" />
+				<include name="${test-converter}/" />
+				<include name="roops2java.txt" />
+      	<include name="roops2pex.txt" />
+				<include name="build.number" />
+				<include name="build.xml" />
+      </tarfileset>
+    </tar>
+    <gzip src="${release}/roops-${version}.${build.number}-all.tar" 
+        destfile="${release}/roops-${version}.${build.number}-all.tar.gz" />
+		<delete file="${release}/roops-${version}.${build.number}-all.tar" />
+  </target>
+
+	<target name="all" depends="release, backup" />
+  
+  <!-- Clean: Delete generated files --> 
+	
+  <target name="clean">
+    <delete dir="${bin-java}" />
+  </target>
+</project>

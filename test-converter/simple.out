@@ -1,0 +1,26 @@
+package mypackage;
+package mypackage;
+package mypackage;
+package mypackage;
+
+@roops.util.NrOfGoals(0)
+@roops.util.NrOfGoals(1)
+@roops.util.NrOfGoals(2)
+
+import roops.util.RoopsArray; @roops.util.BenchmarkClass
+import roops.util.RoopsArray; @roops.util.BenchmarkClass
+
+@roops.util.BenchmarkMethod static
+@roops.util.BenchmarkMethod static
+@roops.util.BenchmarkMethod static
+
+{roops.util.Goals.reached(0);}
+{roops.util.Goals.reached(1);}
+{roops.util.Goals.reached(2, roops.util.Verdict.REACHABLE);}
+{roops.util.Goals.reached(3, roops.util.Verdict.UNREACHABLE);}
+{roops.util.Goals.reached(4, roops.util.Verdict.UNKNOWN);}
+
+try
+{ /**/ }
+finally
+{ /**/ }

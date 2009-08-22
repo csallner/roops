@@ -1,0 +1,40 @@
+//\$category\s*(\S+)
+package $1;
+//\$goals\s*(\d+)
+@roops.util.NrOfGoals($1)
+//\$benchmarkclass
+import roops.util.RoopsArray; @roops.util.BenchmarkClass
+//\$benchmark
+@roops.util.BenchmarkMethod static
+\{\s*/\*\s*\$goal\s*(\d+)\s*\*/\}
+{roops.util.Goals.reached($1);}
+\{\s*/\*\s*\$goal\s*(\d+)\s*reachable\s*\*/\}
+{roops.util.Goals.reached($1, roops.util.Verdict.REACHABLE);}
+\{\s*/\*\s*\$goal\s*(\d+)\s*unreachable\s*\*/\}
+{roops.util.Goals.reached($1, roops.util.Verdict.UNREACHABLE);}
+\{\s*/\*\s*\$goal\s*(\d+)\s*unknown\s*\*/\}
+{roops.util.Goals.reached($1, roops.util.Verdict.UNKNOWN);}
+#region\s*(\S+)
+/* begin $1 */
+#endregion
+/* end */
+//\$endcategory\s*(\S+)
+/* end $1 */
+//\$try
+try
+//\$catch
+catch
+//\$finally
+finally
+//\$throw
+throw
+:/\*\s*\$extends\s*\*/
+extends
+:/\*\s*\$implements\s*\*/
+implements
+/\*\s*\$\s*\*/\s*override
+@Override
+/\*\s*\$\s*\*/\s*virtual
+/**/
+\@Virtual
+/**/
