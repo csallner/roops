@@ -6,6 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Benchmark entry point. 
+ * 
+ * This annotation can only be applied to a method. Roops
+ * does not allow constructors as entry points. 
  * 
  * @author csallner@uta.edu (Christoph Csallner)
  */
