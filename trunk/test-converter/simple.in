@@ -1,0 +1,26 @@
+//$category mypackage
+//$category MyPackage
+//$categoryMyPackage
+//$category		MyPackage
+
+//$goals 0
+//$goals1
+//$goals	2
+
+//$benchmarkclass
+//$benchmarkclass
+
+//$benchmark
+//$benchmark
+//$benchmark
+
+{/*$goal 0*/}
+{/*$goal	1	*/}
+{/*$goal 2 reachable*/}
+{/*$goal 3 unreachable */}
+{/*$goal 4 unknown */}
+
+//$try
+{ /**/ }
+//$finally
+{ /**/ }
