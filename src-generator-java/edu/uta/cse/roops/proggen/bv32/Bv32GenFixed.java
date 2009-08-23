@@ -66,9 +66,9 @@ public class Bv32GenFixed {
 		if(args.length !=4){
 			String usage =
 				"WARNING: This program runs for long time and creates a file containing huge number of methods.\n" +
-				"USAGE: java edu.uta.cse.roops.proggen.AllCombinations CategoryName ClassName NoOfMethodsToPrint NoOfMethodsPerFile\n"+
+				"USAGE: java edu.uta.cse.roops.proggen.bv32.Bv32GenFixed CategoryName ClassName NoOfMethodsToPrint NoOfMethodsPerFile\n"+
 				"\tPlease provide the parameters.\n"+
-				"Do you wish ot continue without providing the parameters instead ?? (Y/N):";
+				"Do you wish to continue without providing the parameters instead ?? (Y/N):";
 			
 			System.out.println(usage);
 						
@@ -90,7 +90,7 @@ public class Bv32GenFixed {
 			NoOfMethodsToPrint = Integer.MAX_VALUE;
 			MethodsPerFile = Integer.MAX_VALUE;
 			CategoryName ="roops.extended.bv32";
-			ClassName = "AllCombinations";
+			ClassName = "BV32GenFixed";
 			
 		}
 		else{
@@ -243,7 +243,7 @@ public class Bv32GenFixed {
 								
 								FileMethodCounter =0;
 								output += "\t"+"#endregion\n";
-								output +="\n"+ "}"+"\n"+"//$endcategory"+ args[0];
+								output +="\n"+ "}"+"\n"+"//$endcategory "+ args[0];
 								
 								fileOut.write(output); // Finally writes to output file.
 								
