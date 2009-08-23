@@ -191,10 +191,13 @@ public class Bv32GenRandom {
 	public static void main(String [] args){
 		
 		System.out.println("Usage: CategoryName NO_OF_METHODS ProbabiltyOfVaribaleNodeInLeaf\n");
+		
+		String className = "BV32Random";
+		String fileName = className+".cs";
 				
 	
 		String categoryName ="roops.extended.bv32";
-		int MethodLimit = 200;
+		int MethodLimit = 20;
 		
 		if(args.length == 3){			
 						
@@ -209,14 +212,14 @@ public class Bv32GenRandom {
 				
 		try{
 			// Create file
-			FileWriter fstream = new FileWriter("DeepASTrandom.cs");
+			FileWriter fstream = new FileWriter(fileName);
 			BufferedWriter fileOut = new BufferedWriter(fstream);
 			
 			String output ="";
 			output += "//$category "+ categoryName  +"\n\n";
 			output += "// Author: Ishtiaque Hussain\n\n ";
 			output += "//$benchmarkclass"+"\n";
-			output += "public class "+ "DeepASTrandom"+"\n"+"{"+"\n";
+			output += "public class "+ className+"\n"+"{"+"\n";
 			
 			Node root = null;
 			
