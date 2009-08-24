@@ -10,6 +10,7 @@ import java.util.Map;
  * exploration system. Very basic.
  * 
  * @author csallner@uta.edu (Christoph Csallner)
+ * @author mainul.islam@mavs.uta.edu (Mainul Islam)
  */
 public class Goals {
 
