@@ -1,0 +1,40 @@
+\section{Extended Categories}
+
+\subsection{Bitvector Arithmetic for 32-bit Integers (with exceptions)}
+
+This benchmark includes division and remainder.
+However, for division and remainder operations, a helper method must be used 
+to accomodate for varying semantics of the different target languages.
+See \refsection{RoopsLibrary}. A tool can treat it as an intrinsic operation
+to avoid having to reason inter-procedurally.
+
+\begin{verbatim}
+    //$goals 3
+    //$benchmark
+    public void XDividedByYEqualsZ(int x, int y, int z) {
+        //$try
+        {
+            if (RoopsInt32.Divide(x, y) == z)
+                { /*$goal 0 */}
+            else
+                { /*$goal 1*/}
+        }
+        //$catch
+        {
+                { /*$goal 2*/}
+        }
+    }
+\end{verbatim}
+
+\subsection{Linear Arithmetic for Floating Point Numbers (without NaN, Infinity, etc.)}
+TODO
+\subsection{Linear Arithmetic for Floating Point Numbers (with NaN, Infinity, etc.)}
+TODO
+\subsection{Bitvector Arithmetic for Floating Point Numbers}
+TODO
+
+\subsection{Objects with subtypes and exceptions}
+TODO
+
+\subsection{Arrays with exceptions}
+TODO

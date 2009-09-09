@@ -1,0 +1,65 @@
+\label{RoopsLibrary}\section{Roops Library}
+
+The benchmarks must not use any library class or methods which are not included in the benchmark.
+Furthermore, Roops comes with its own standard library which can be implemented in Java and C\#:
+
+\subsection{Arithmetic}
+\begin{verbatim}
+    public class RoopsInt32 {
+        public static int MIN_VALUE = -2147483648;
+        public static int MAX_VALUE = 2147483647;
+        
+        public static int Divide(int x, int y) {
+            if (x == MIN_VALUE && y == -1) 
+                return 0;
+            else
+                return x / y;
+        }
+        public static int Remainder(int x, int y) {
+            if (x == MIN_VALUE && y == -1) 
+                return 0;
+            else
+                return x % y;   
+        }
+    }
+    public class RoopsInt64 {
+        public static long MIN_VALUE = -9223372036854775808;
+        public static long MAX_VALUE = 9223372036854775807;
+        
+        public static long Divide(long x, long y) {
+            if (x == MIN_VALUE && y == -1) 
+                return 0;
+            else
+                return x / y;
+        }
+        public static long Remainder(long x, long y) {
+            if (x == MIN_VALUE && y == -1) 
+                return 0;
+            else
+                return x % y;   
+        }
+    }
+\end{verbatim}
+
+Example:
+\begin{verbatim}
+    //$goals 2
+    //$benchmark
+    public void XRemainderYEqualsZ(int x, int y, int z) {
+        if (y != 0 && RoopsInt32.Remainder(x, y) == z)
+            { /*$goal 0 */}
+        else
+            { /*$goal 1*/}
+    }
+\end{verbatim}
+
+
+\subsection{Array}
+\begin{verbatim}
+    public class RoopsArray {
+        public static int getLength(int[] a) {
+            // if a is null, throws exception;
+            // otherwise, returns length of a
+        }
+    }
+\end{verbatim}
