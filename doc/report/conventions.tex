@@ -9,10 +9,10 @@ which can be easily adapted.
 \subsection{Benchmark Files}
 
 Several benchmarks are collected in a benchmark class that is stored in a file.
-Each file must follow the following format;
-{\tt //\$}-comments must be given on separate lines.
+Each file must follow the following format.
 
 \begin{itemize}
+\item {\tt //\$} must be given on separate lines.
 \item {\tt //\$category NAME} defines a package/namespace NAME. NAME should be of the form \co{aaaa.bb.ccc}. The file containing this tag should be in directory \co{aaaa/bb/ccc}.
 {\it Motivation:} This will satisfy the Java package conventions and make it easy to generate Java files. 
 \item {\tt //\$benchmarkclass} introduces a class containing benchmarks.
@@ -47,29 +47,36 @@ In the case of a competition, we suggest that the explicit verdict is stripped
 from the program text before it is given to the tool.
 \end{itemize}
 
-Example:
+For example, the following is an excerpt of the 
+\verb|LinearWithoutOverflow| benchmark class,
+which resides in \verb|roops/core/bv32/linear/noex/gods/|
+in the \verb|src-benchmarks-roops| directory.
+
 \begin{verbatim}
-//$category LinearArithmetic
+//$category roops.core.bv32.linear.noex.gods
 
+// Authors: Nikolai Tillmann and Christoph Csallner
 //$benchmarkclass
-public class BenchmarkExample {
-    //$goals 1
-    //$benchmark
-    public void Trivial1() {
-        {/*$goal 0*/}        
-    }
-
+public class LinearWithoutOverflow
+{
+    #region Equals
     //$goals 2
     //$benchmark
-    public void Trivial2(boolean b) {
-        if (b)
-            {/*$goal 0*/}        
+    public void XPlusYEqualsZ(int x, int y, int z)
+    {
+        if (x + y == z)
+            { /*$goal 0*/}
         else
-            {/*$goal 1*/}        
+            { /*$goal 1*/}
     }
+		
+		/* .. */
+		
+    #endregion
 }
-
-//$endcategory LinearArithmetic
+    
+//$endcategory roops.core.bv32.linear.noex.gods		
+}
 \end{verbatim}
 
 Exception handling must be done via the following syntactic entities,

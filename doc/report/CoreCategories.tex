@@ -1,5 +1,7 @@
 \section{Core Categories}
 
+\verb|src-benchmarks-roops/roops/core/|
+
 All benchmarks are categorized according to the following classifications.
 Each benchmark may refer to multiple categories.
 Benchmarks may call other methods which are included as source code,
@@ -23,6 +25,8 @@ Allowable operations and required annotations are detailed in the categories bel
 \subsection{Arithmetic}
 
 \subsubsection{Linear Arithmetic for 32-bit Integers (without overflows)}
+
+\verb|src-benchmarks-roops/roops/core/bv32/linear/noex/gods|
 
 These benchmarks may only contain linear integer arithmetic (addition, multiplication with constants)
 and integer relations. The reachability of branches is not affected by overflows of 32-bit integers. 
@@ -78,6 +82,8 @@ bitwise operations (left shift, signed and unsigned right shift, or, and, xor, n
 Just as 32-bit arithmetic.
 
 \subsection{Objects without exceptions}
+
+\verb|src-benchmarks-roops/roops/core/objects|
 
 Objects may be parameters of a benchmark. 
 Interface and class types may be defined. 
@@ -237,7 +243,10 @@ Example 5:
     }
 \end{verbatim}
 
+
 \subsection{Inline integer arrays without exceptions}
+
+\verb|src-benchmarks-roops/roops/core/bv32/arr/noex|
 
 Arrays may not be parameters to a benchmark,
 but they may be created as part of the benchmark code.
