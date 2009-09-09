@@ -154,7 +154,7 @@ public class Converter {
 		"  java roops.util.Converter InFileName OutFileName TransformRulesFileName\n" +
 		"  java roops.util.Converter InDirectory OutDirectory TransformRulesFileName OutFileExt\n" +
 		"EXAMPLE:\n" +
-		"  java roops.util.Converter src-roops src-java roops2java.txt java";
+		"  java roops.util.Converter src-benchmarks-roops src-benchmarks-java roops2java.txt java";
 	
 	/**
 	 * Entry
