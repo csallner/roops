@@ -5,7 +5,7 @@ namespace $1 {
 //\$benchmarkclass
 [Microsoft.Pex.Framework.PexClass]
 //\$benchmark
-[Microsoft.Pex.Framework.PexMethod]
+[Microsoft.Pex.Framework.PexMethod(TimeOut=1000)]
 \{\s*/\*\s*\$goal\s*(\d+)\s*\*/\}
 {Microsoft.Pex.Framework.Goals.PexGoal.Reached($1);}
 \{\s*/\*\s*\$goal\s*(\d+)\s*(\S+)\s*\*/\}
