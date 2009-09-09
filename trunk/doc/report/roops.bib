@@ -1,0 +1,303 @@
+Author csallner AT uta.edu (Christoph Csallner)
+
+Bibtex supports global string variables.
+# is the string concatenation operator. 
+
+We strip trademarks like (TM) or \texttrademark
+=================================================
+
+GLOBAL VARIABLES
+
+@string{ACM      = {ACM}}
+@string{AW       = {Addison-Wesley}}
+@string{IEEE     = {IEEE}}
+@string{MSR      = {Microsoft Research}}
+@string{PH       = {Prentice Hall}}
+@string{PROC     = {Proc. }}
+@string{Springer = {Springer}}
+
+@string{ASE   = { IEEE/ACM International Conference on Automated Software
+ 		Engineering (ASE)}}
+@string{CAV   = { International Conference on Computer Aided 
+    Verification (CAV)}}
+@string{CC    = { International Conference on Compiler Construction (CC)}} 		
+@string{ECOOP = { European Conference on Object-Oriented 
+    Programming (ECOOP)}}
+@string{FASE  = { International Conference on Fundamental Approaches to 
+    Software Engineering (FASE)}}
+@string{FSE   = { ACM SIGSOFT International Symposium on Foundations of 
+    Software Engineering (FSE)}}
+@string{ICFEM = { International Conference on Formal Engineering 
+    Methods (ICFEM)}}
+@string{ICSE  = { ACM/IEEE International Conference on Software 
+    Engineering (ICSE)}}
+@string{ICSM  = { IEEE International Conference on Software 
+    Maintenance (ICSM)}}
+@string{ISSTA = { ACM SIGSOFT International Symposium on Software Testing 
+    and Analysis (ISSTA)}}
+@string{ISSRE = { IEEE International Symposium on Software Reliability 
+    Engineering (ISSRE)}}    
+@string{OOPSLA= { ACM SIGPLAN Conference on Object-Oriented Programming, 
+    Systems, Languages, and Applications (OOPSLA)}}    
+@string{PASTE = { ACM SIGPLAN-SIGSOFT Workshop on Program Analysis for 
+    Software Tools and Engineering (PASTE)}}
+@string{PLDI  = { ACM SIGPLAN Conference on Programming Language Design 
+    and Implementation (PLDI)}}
+@string{POPL  = { ACM SIGPLAN-SIGACT Symposium on
+    Principles of Programming Languages (POPL)}}
+@string{PPDP  = { ACM SIGPLAN Symposium on Principles and Practice of
+ 		Declarative Programming (PPDP)}}    
+@string{SOFSEM= { International Conference on Current Trends in Theory and 
+    Practice of Computer Science (SOFSEM)}}
+@string{TACAS = { International Conference on Tools and Algorithms for the 
+    Construction and Analysis of Systems (TACAS)}}
+@string{TOSEM = {ACM Transactions on Software Engineering and Methodology 
+    (TOSEM)}}                                
+@string{TSE   = {IEEE Transactions on Software Engineering (TSE)}}
+@string{VMCAI = {International Conference on Verification, Model Checking,
+    and Abstract Interpretation (VMCAI)}}
+            
+=================================================
+
+
+ENTRIES
+
+@inproceedings{cadar05execution,
+	author = {Cristian Cadar and Dawson R. Engler},
+	title = {Execution generated test cases: How to make systems code 
+		crash itself},
+	booktitle = PROC # {12th International SPIN Workshop on Model 
+		Checking of Software},
+	month = aug,
+	year = 2005,
+	pages = {2--23},
+	publisher = Springer,
+}
+
+@inproceedings{cadar06exe,
+  author = {Cristian Cadar and Vijay Ganesh and Peter M. Pawlowski and 
+  		David L. Dill and Dawson R. Engler},
+  title = {EXE: Automatically generating inputs of death},
+  booktitle = PROC # {13th ACM Conference on Computer and Communications 
+  		Security (CCS)},
+  year = 2006,
+  month = oct,
+  pages = {322--335},
+  publisher = ACM
+}
+
+@inproceedings{cadar08klee,
+  author = {Cristian Cadar and Daniel Dunbar and Dawson R. Engler},
+  title = {KLEE: Unassisted and Automatic Generation of High-Coverage
+               Tests for Complex Systems Programs},
+  booktitle = PROC # {8th USENIX Symposium on Operating Systems Design and
+		Implementation (OSDI)},
+  year = 2008,
+	month = dec,
+  pages = {209--224},
+	publisher = {USENIX},
+}
+
+@article{csallner04jcrasher,
+  author = {Christoph Csallner and Yannis Smaragdakis},
+  title = {{JCrasher}: An automatic robustness tester for {Java}},
+  journal = {Software---Practice \& Experience},
+  year = 2004,
+  month = sep,
+  volume = 34,
+  number = 11,
+  pages = {1025--1050}
+}
+
+@inproceedings{csallner05check,
+  author = {Christoph Csallner and Yannis Smaragdakis},
+  title = {{Check} 'n' {Crash}: Combining static checking and testing},
+  booktitle = PROC # {27th} # ICSE,
+  year = 2005,
+  month = may,
+  pages = {422--431},
+  publisher = ACM
+}
+
+@inproceedings{csallner06dsd-crasher,
+   author = {Christoph Csallner and Yannis Smaragdakis},
+   title = {{DSD}-{C}rasher: A Hybrid Analysis Tool for Bug Finding},
+   booktitle = PROC # ISSTA,   
+   year = 2006,
+   month = jul,
+   pages = {245--254},
+   publisher = ACM,
+   summary = {ACM SIGSOFT Distinguished Paper Award}
+}
+
+@inproceedings{csallner08dysy,
+   author = {Christoph Csallner and Nikolai Tillmann and Yannis Smaragdakis},
+   booktitle = PROC # {30th} # ICSE,
+   title = {{DySy}: Dynamic symbolic execution for invariant inference},
+   year = 2008,
+   month = may,
+   pages = {281--290},
+   publisher = ACM
+}
+
+@inproceedings{damorim06empirical,
+ author = {Marcelo d'Amorim and Carlos Pacheco and Tao Xie and Darko Marinov
+ 		and Michael D. Ernst},
+ title = {An Empirical Comparison of Automated Generation and Classification
+ 		Techniques for Object-Oriented Unit Testing},
+ booktitle = PROC # {21st} # ASE,
+ year = 2006,
+ month = sep,
+ pages = {59--68},
+ publisher = IEEE,
+}
+ 
+@inproceedings{deng06bogor,
+  author    = {Xianghua Deng and Jooyong Lee and Robby},
+  title     = {{Bogor/Kiasan}: A k-bounded symbolic execution for checking
+               strong heap properties of open systems},
+  booktitle = PROC # {21st} # ASE,
+  year      = 2006,
+  month     = sep,
+  publisher = IEEE,
+  pages     = {157--166},
+}
+
+@techreport{detlefs03simplify,
+  author = {David Detlefs and Greg Nelson and James B. Saxe},
+  year = 2003,
+  month = jul,
+  title = {{Simplify}: A theorem prover for program checking},
+  number = {HPL-2003-148},
+  institution = {Hewlett-Packard Systems Research Center}
+}
+
+@manual{ecma01c-sharp,
+  author = {{Ecma International}},
+  title = {Standard {ECMA-334}: C\# Language Specification},
+  edition = {First},
+  year = 2001,
+  month = dec
+}
+
+@manual{ecma01cli,
+  author = {{Ecma International}},
+  title = {Standard {ECMA-335}: Common Language Infrastructure ({CLI})},
+  edition = {First},
+  year = 2001,
+  month = dec
+}
+
+@manual{ecma06c-sharp,
+  author = {{Ecma International}},
+  title = {Standard {ECMA-334}: C\# Language Specification},
+  edition = {Fourth},
+  year = 2006,
+  month = jun,
+}  
+
+@manual{ecma06cli,
+  author = {{Ecma International}},
+  title = {Standard {ECMA-335}: Common Language Infrastructure ({CLI})},
+  edition = {Fourth},
+  year = 2006,
+  month = jun,
+}
+
+@inproceedings{flanagan02extended,
+  author = {Cormac Flanagan and K. Rustan M. Leino and Mark Lillibridge and
+           Greg Nelson and James B. Saxe and Raymie Stata},
+  year = 2002,
+  month = jun,
+  title = {Extended static checking for {Java}},
+  booktitle = PROC # PLDI,
+  pages = {234--245},
+  publisher = ACM
+}
+
+@inproceedings{godefroid05dart,
+  author = {Patrice Godefroid and Nils Klarlund and Koushik Sen},
+  title = {DART: Directed automated random testing},
+  booktitle = PROC # PLDI,
+  year = 2005,
+  month = jun,
+  pages = {213--223},
+  publisher = ACM
+}
+
+@book{gosling96java,
+  author = {James Gosling and Bill Joy and Guy L. Steele},
+  title = {The Java Language Specification},
+  edition = {First},
+  year = 1996,
+  month = sep,
+  publisher = AW
+} 
+
+@book{gosling05java,
+  author = {James Gosling and Bill Joy and Guy L. Steele and Gilad Bracha},
+  title = {The Java Language Specification},
+  edition = {Third},
+  year = 2005,
+  month = jun,
+  publisher = PH
+} 
+
+@book{hejlsberg03csharp,
+  author = {Anders Hejlsberg and Scott Wiltamuth and Peter Golde},
+  title = {The C\# Programming Language},
+  edition = {First},
+  year = 2003,
+  month = oct,
+  publisher = AW
+}
+
+@book{hejlsberg06csharp,
+  author = {Anders Hejlsberg and Scott Wiltamuth and Peter Golde},
+  title = {The C\# Programming Language},
+  edition = {Second},
+  year = 2006,
+  month = jun,
+  publisher = AW
+}
+
+@article{king76symbolic,
+  author = {James C. King},
+  title = {Symbolic execution and program testing},
+  journal = {Communications of the ACM},
+  year = 1976,
+  volume = 19,
+  number = 7,
+  pages = {385--394},
+}
+
+@inproceedings{sen05cute,
+  author    = {Koushik Sen and Darko Marinov and Gul Agha},
+  title     = {CUTE: A concolic unit testing engine for {C}},
+  booktitle = PROC # {13th} # FSE,
+  year      = 2005,
+  month     = sep,
+  pages     = {263--272},
+  publisher = ACM,
+}
+
+@inproceedings{tillmann08pex,
+   author = {Nikolai Tillmann and Jonathan de Halleux},
+   booktitle = PROC # {2nd International Conference on Tests And Proofs (TAP)},
+   title = {Pex - White Box Test Generation for {.Net}},
+   year = 2008,
+   month = apr,
+   pages = {134--153},
+   publisher = Springer,
+}
+
+@inproceedings{tomb07variably,
+  author    = {Aaron Tomb and Guillaume P. Brat and Willem Visser},
+  title     = {Variably interprocedural program analysis for runtime error
+               detection},
+  booktitle = PROC # ISSTA,
+  year      = 2007,
+  month     = jul,
+  pages     = {97--107},
+  publisher = ACM,
+}

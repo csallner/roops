@@ -1,0 +1,106 @@
+\section{Conventions}
+
+Benchmarks must be written in a common notation, called \co{Roops},
+which can be characterized as an extended common subset of Java and C\#.
+
+We provide several examples for \co{Roops} benchmarks together with translators to both Java and C\#, 
+which can be easily adapted.
+
+\subsection{Benchmark Files}
+
+Several benchmarks are collected in a benchmark class that is stored in a file.
+Each file must follow the following format;
+{\tt //\$}-comments must be given on separate lines.
+
+\begin{itemize}
+\item {\tt //\$category NAME} defines a package/namespace NAME. NAME should be of the form \co{aaaa.bb.ccc}. The file containing this tag should be in directory \co{aaaa/bb/ccc}.
+{\it Motivation:} This will satisfy the Java package conventions and make it easy to generate Java files. 
+\item {\tt //\$benchmarkclass} introduces a class containing benchmarks.
+{\it Motivation:} Methods in Java and C\# must reside in classes.
+\item {\tt //\$goals COUNT} must immediately precede a benchmark, defines that the benchmarks has goals $0, \ldots, COUNT-1$.
+{\it Motivation:} We want to measure how many goals are covered by individual tools.
+\item {\tt //\$benchmark} introduces a benchmark method.
+{\it Motivation:} Code in Java and C\# is stored in methods.
+\item {\tt //\$endcategory NAME} finishes a package/namespace NAME.
+{\it Motivation:} Namespaces in C\# are scoped.
+\end{itemize}
+
+For simplicity of the tools, benchmarks have to be proper methods and cannot be constructors.
+While many of the benchmarks in the repository only consists of single methods,
+it is allowed for benchmark methods to call other methods,
+and goals may be distributed over all (transitively) called methods.
+However, the annotation stating how many goals there are in total has to be attached at the top-level benchmark method.
+
+So, if you want to only consider a constructor as a benchmark, the idea is that you create a benchmark method for it with all the annotations, and then the benchmark invokes the constructor, which then contains the actual goals.
+
+Within each benchmarks, goal statements are encoded as follows.
+\begin{itemize}
+\item {\tt \{/*\$goal NUMBER*/\}} must immediately precede a benchmark, defines that the benchmarks has goals $0, \ldots, COUNT-1$. 
+This goal has an {\tt unknown} verdict.
+\item {\tt \{/*\$goal NUMBER VERDICT*/\}} as before, but states a verdict, which must be one of the following:
+\begin{itemize}
+\item {\tt reachable}: There is at least one tool which could generate a reproducible test case that reaches this point.
+\item {\tt unreachable}: This goal is unreachable, as far as we know.
+\item {\tt unknown}: Neither of the above.
+\end{itemize}
+In the case of a competition, we suggest that the explicit verdict is stripped
+from the program text before it is given to the tool.
+\end{itemize}
+
+Example:
+\begin{verbatim}
+//$category LinearArithmetic
+
+//$benchmarkclass
+public class BenchmarkExample {
+    //$goals 1
+    //$benchmark
+    public void Trivial1() {
+        {/*$goal 0*/}        
+    }
+
+    //$goals 2
+    //$benchmark
+    public void Trivial2(boolean b) {
+        if (b)
+            {/*$goal 0*/}        
+        else
+            {/*$goal 1*/}        
+    }
+}
+
+//$endcategory LinearArithmetic
+\end{verbatim}
+
+Exception handling must be done via the following syntactic entities,
+that replace the usual \co{try}, \co{catch}, \co{finally}, \co{throw} statements.
+\begin{itemize}
+\item {\tt //\$try} must precede a protected block.
+\item {\tt //\$catch} precedes an exception handler block following a protected block.
+\item {\tt //\$finally} precedes a finally block following a protected block.
+\item {\tt //\$throw} throws some exception.
+\end{itemize}
+Note that the exception handler cannot specify a particular exception type.
+As a consequence, the catch handler may not observe the caught exception type,
+or access the exception object in any other way.
+In the corresponding Java and C\# code, the handler will catch the most general exception type.
+See \refsection{MoreExamples} for examples.
+\co{Roops} does not have Java's \co{throws} statement. 
+{\it Motivation:} While the benchmark method itself probably won't throw exceptions,
+it might be useful to have this statement available when adapting existing algorithms 
+to the \co{Roops} notation.
+
+The following syntactic entities allow an easy conversion between Java and C\#
+in the presence of inheritance:
+\begin{itemize}
+\item {\tt extends/*\$:*/} and {\tt :/*\$extends*/}
+\item {\tt implements/*\$:*/} and {\tt :/*\$implements*/} and {\tt ,/*\$implements*/}
+\item {\tt @Override} and {\tt /*\$*/override}
+\item {\tt @Virtual} and {\tt /*\$*/virtual}
+\end{itemize}
+
+\subsection{Discussion}
+
+It is often desirable to impose bounds on inputs to benchmarks,
+e.g.\ bounding the number of objects in the input graph, or the number of branches executed along individual code paths.
+However, such bounds are highly tool specific, and are not yet included in the \co{Roops} notation.

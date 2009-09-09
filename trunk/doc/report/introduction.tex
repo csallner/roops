@@ -1,0 +1,60 @@
+\section{Introduction}
+
+Benchmarks have been important in the development of many areas in computer science.
+Examples include databases, decision procedures (SAT, SMT, etc.), 
+programming languages, memory management, computer architecture,
+performance optimizations, etc.
+
+At the heart of many interesting software engineering problems is the question of
+reachability, i.e., whether a statement in the code may be executed in some scenario.
+For example, compilers try to identify and eliminate dead code,
+model checkers explore reachable model states exhaustively up to a given bound,
+program verification systems (e.g., ESC/Java or Spec\#) prove that faulty statements are unreachable,
+and test generation tools try to trigger runtime exceptions and assertion violations
+and try to achieve high code coverage.
+
+Research in automatic software engineering tools and techniques has made a lot 
+of progress in the last decades. For example, many papers have described new tools
+and techniques for automatic bug finding. Examples include JCrasher \cite{csallner04jcrasher}, 
+Randoop \cite{}, Pex \cite{tillmann08pex}, and many more. What many of these papers have in 
+common is that it is very hard to compare them with each other. Tool implementations
+target different programming languages (i.e., Java and C\#) and use different
+subject programs for evaluation. What is lacking is a common benchmark that
+can be easily used and reused by many researchers to evaluate and compare
+program analysis tools.
+
+This paper defines a common notation for writing benchmarks for tools 
+that decide Reachability in Object Oriented ProgramS (\co{Roops}).
+\co{Roops} is general enough to be useful for many different researchers,
+working on different tools for different applications and different languages.
+We currently focus on bug finding tools and automatic test case generators
+for Java and C\#. But we are confident that \co{Roops} is general enough to 
+support more applications.
+A common benchmark notation with standardized reachability goals should allow 
+the community to share and build upon each others benchmarks, and enable
+researchers to compare empirical results.
+
+The \co{Roops} notation is flexible and easily adopted for different target 
+environments. The notation is a bit clumsy---but it allows targetting Java 
+and C\# and possible other languages at the same time, and also allows supporting different testing 
+environments such as JUnit or others. A design principle of the \co{Roops} 
+notation is that such translation can be achieved by simply using regular 
+expressions, not needing a full parser and type checker. In fact, we
+already have translators for translating the \co{Roops} benchmarks to C\#
+and to Java.
+
+\co{Roops} includes a mechanism to identify reachability goals. 
+Each \co{Roops} benchmark is simply a public method that takes parameters,
+in effect being a Parameterized Unit Test\cite{} or JUnit Theory\cite{}.
+
+\co{Roops} includes a way to describe test cases, 
+so that achieved goals can be independently verified;
+such test cases are Unit Tests\cite{}.
+
+We envision that (open source) libraries will read and write programs in the
+\co{Roops} notation to help newcomers build new tools.
+
+We maintain all \co{Roops} benchmarks, associated tools (benchmark generators, 
+converters, etc.), and documentation under an open-source license in the
+following repository:
+\verb|http://code.google.com/p/roops/|

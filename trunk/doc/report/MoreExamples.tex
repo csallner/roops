@@ -1,0 +1,24 @@
+\label{MoreExamples}\section{More Examples}
+
+\begin{verbatim}
+//$category Exceptions
+
+//$benchmarkclass
+public class BenchmarkExample {
+    //$goals 2
+    //$benchmark
+    public void Trivial1() {
+        //$try
+        {
+            //$throw
+            {/*$goal 0 unreachable*/}        
+        }
+        //$catch
+        {
+            {/*$goal 1 reachable*/}        
+        }
+    }
+}
+
+//$endcategory Exceptions
+\end{verbatim}

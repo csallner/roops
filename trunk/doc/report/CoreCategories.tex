@@ -1,0 +1,284 @@
+\section{Core Categories}
+
+All benchmarks are categorized according to the following classifications.
+Each benchmark may refer to multiple categories.
+Benchmarks may call other methods which are included as source code,
+but they may not refer to library classes or methods not mentioned below.
+
+\subsection{Procedural Language}
+
+At the core of all categories is a basic subset of C\# and Java
+which defines methods and control-flow:
+\begin{itemize}
+\item Benchmark methods
+\item Static helper methods
+\item \co{if}, \co{while}, \co{for}, recursion
+\item \co{switch} over integers
+\end{itemize}
+
+Supported datatypes are \co{int}, \co{long}, \co{boolean},
+\co{Object}, and arrays over the above.
+Allowable operations and required annotations are detailed in the categories below.
+
+\subsection{Arithmetic}
+
+\subsubsection{Linear Arithmetic for 32-bit Integers (without overflows)}
+
+These benchmarks may only contain linear integer arithmetic (addition, multiplication with constants)
+and integer relations. The reachability of branches is not affected by overflows of 32-bit integers. 
+(A tool that can only reason about gods integers may not be able to determine the 
+reachability of all branches.)
+\begin{verbatim}
+    //$goals 2
+    //$benchmark
+    public void XPlusYEqualsZ(int x, int y, int z) {
+        if (x + y == z)
+            { /*$goal 0 */}
+        else
+            { /*$goal 1*/}
+    }
+\end{verbatim}
+
+\subsubsection{Linear Arithmetic for 32-bit Integers (with overflows)}
+
+These benchmarks may only contain linear integer arithmetic (addition, multiplication with constants)
+and integer relations. The reachability of branches may be affected by overflows of two's-complement 
+32-bit integers. (A tool that can only reason about gods integers should not be able to 
+determine the  reachability of all branches.)
+\begin{verbatim}
+    //$goals 2
+    //$benchmark
+    public void XIsSpecial(int x) {
+        if (x < 0 && -x < 0) // 0x80000000 solves this
+            { /*$goal 0 */}
+        else
+            { /*$goal 1*/}
+    }
+\end{verbatim}
+
+\subsubsection{Non-Linear Arithmetic for 32-bit Integers}
+
+These benchmarks may include multiplication of two non-constants,
+bitwise operations (left shift, signed and unsigned right shift, or, and, xor, not).
+
+\begin{verbatim}
+    //$goals 2
+    //$benchmark
+    public void XTimesYOverflow(int x, int y) {
+        if (x > 0 && y > 0 &&
+            x * y < 0) 
+            { /*$goal 0 */}
+        else
+            { /*$goal 1*/}
+    }
+\end{verbatim}
+
+\subsubsection{64-bit Arithmetic}
+
+Just as 32-bit arithmetic.
+
+\subsection{Objects without exceptions}
+
+Objects may be parameters of a benchmark. 
+Interface and class types may be defined. 
+All interfaces and classes must be public.
+All fields must be \co{public}.
+New objects may be created by the benchmark code,
+fields can be written to or read from.
+Casting is not allowed.
+All dereferences of objects must be guarded by null-checks,
+if necessary.
+Generics are not allowed.
+Interfaces may not extend other interfaces.
+Static fields are not allowed.
+All methods must be either \co{private} or \co{public}.
+Custom constructors are not allowed; only the implicit nullary default constructor is allowed.
+Any kind of annotation or modifier not specified in this section is not allowed,
+e.g. \co{sealed}, \co{final}, \co{readonly}, \co{transient}, \co{synchronized}, \co{volatile}.
+Explicit interface implementation and properties of C\# are not allowed.
+
+Example 1:
+\begin{verbatim}
+    //$goals 2
+    //$benchmark
+    public void ObjectsNotEqual(Object x, Object y) {
+        if (x != null && y != null &&
+            x != y) 
+            { /*$goal 0 */}
+        else
+            { /*$goal 1*/}
+    }
+\end{verbatim}
+
+Example 1.5:
+\begin{verbatim}
+    //$goals 2
+    //$benchmark
+    public void ObjectsNotEqual(Object x) {
+        Object y = new Object();
+        if (x != null && y != null &&
+            x != y) 
+            { /*$goal 0 */}
+        else
+            { /*$goal 1*/}
+    }
+\end{verbatim}
+
+Example 2:
+\begin{verbatim}
+    public class Point {
+        public int X;
+        public int Y;
+    }
+    //$goals 2
+    //$benchmark
+    public void PointsNotEqual(Point p, Point q) {
+        if (p != null && q != null &&
+            (p.X != q.X || p.Y != q.Y))
+            { /*$goal 0 */}
+        else
+            { /*$goal 1*/}
+    }
+\end{verbatim}
+
+Example 2.5:
+\begin{verbatim}
+    public class Point {
+        public int X;
+        public int Y;
+    }
+    //$goals 2
+    //$benchmark
+    public void PointsNotEqual(Point p, Point q) {
+        if (p != null && q != null) {
+            p.X = 42;
+            if (q.X != 42)
+                { /*$goal 0 */}
+            else
+                { /*$goal 1*/}
+        }
+    }
+\end{verbatim}
+
+Example 3:
+\begin{verbatim}
+    public interface IPoint {
+        int GetX();
+        int GetY();
+    }
+    public class Point implements/*$:*/ IPoint {
+        public int X;
+        public int GetX() { return this.X; }
+        public int Y;
+        public int GetY() { return this.Y; }
+    }
+    //$goals 2
+    //$benchmark
+    public void PointsNotEqual(IPoint p, IPoint q) {
+        if (p != null && q != null &&
+            (p.GetX() != q.GetX() || p.GetY() != q.GetY()))
+            { /*$goal 0 */}
+        else
+            { /*$goal 1*/}
+    }
+\end{verbatim}
+
+All overriden methods must be explicitly specified by \co{@Override} or \co{/*\$*/override}.
+Example 4:
+\begin{verbatim}
+    public abstract class PointBase {
+        public abstract int GetX();
+        public abstract int GetY();
+    }
+    public class Point extends/*$:*/ PointBase {
+        public int X;
+        public @Override int GetX() { return this.X; }
+        public int Y;
+        public @Override int GetY() { return this.Y; }
+    }
+    //$goals 2
+    //$benchmark
+    public void PointsNotEqual(PointBase p, PointBase q) {
+        if (p != null && q != null &&
+            (p.GetX() != q.GetX() || p.GetY() != q.GetY()))
+            { /*$goal 0 */}
+        else
+            { /*$goal 1*/}
+    }
+\end{verbatim}
+
+All virtual methods must be explicitly specified by \co{@Virtual} or \co{/*\$*/virtual}.
+Casts are not allowed, but can be simulated via virtual methods.
+
+Example 5:
+\begin{verbatim}
+    public class Point {
+        public int X;
+        public @Virtual int GetX() { return this.X; }
+        public int Y;
+        public @Virtual int GetY() { return this.Y; }
+        public @Virtual IsPlus1() { return false; }
+    }
+    public class PointPlus1 extends/*$:*/ Point {
+        public @Override int GetX() { return this.X+1; }
+        public @Override int GetY() { return this.Y+1; }
+        public @Override IsPlus1() { return true; }
+    }
+    //$goals 2
+    //$benchmark
+    public void FunkyPoints(Point p, Point q) {
+        if (p != null && q != null &&
+            p.IsPlus1() && !q.IsPlus1() &&
+            p.GetX() + q.GetX() == 42 &&
+            p.GetX() - q.GetY() == 21)
+            { /*$goal 0 */}
+        else
+            { /*$goal 1*/}
+    }
+\end{verbatim}
+
+\subsection{Inline integer arrays without exceptions}
+
+Arrays may not be parameters to a benchmark,
+but they may be created as part of the benchmark code.
+Jagged arrays, i.e.\ arrays of arrays, are not allowed.
+Only arrays of \co{int} are allowed.
+
+Supported operations are: Array creation, reading an array elements, writing an array element.
+All operations must be guarded in the program to avoid exceptions.
+
+\begin{verbatim}
+    //$goals 2
+    //$benchmark
+    public void ArrayReadWrite(int size, int i, int j, int value) {
+        if (size>=0 && i>=0 && i<size && j>=0 && j<size && value>0)
+        {
+            int[] a = new int[size];
+            a[i] = value;
+            if (a[j] == value)
+                { /*$goal 0 */}
+            else
+                { /*$goal 1*/}
+        }
+    }
+\end{verbatim}
+
+\begin{verbatim}
+    //$goals 2
+    //$benchmark
+    public void ArrayReadWrite(int size, int i) {
+        if (size>=0 && i>=0 && i<size)
+        {
+            int[] a = new int[size];
+            for (int j=0; j<size; j++)
+                a[j] = j;
+            if (a[i] == 42)
+                { /*$goal 0 */}
+            else
+                { /*$goal 1*/}
+        }
+    }
+\end{verbatim}
+
+Note that we do not allow an operation that retrieves the length of an array;
+as all arrays are created in the code, the length must be known to the benchmark already.
