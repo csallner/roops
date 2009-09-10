@@ -2,26 +2,36 @@
 
 Benchmarks have been important in the development of many areas in computer science.
 Examples include databases, decision procedures (SAT, SMT, etc.), 
-programming languages, memory management, computer architecture,
+programming languages \cite{blackburn06dacapo}, memory management, computer architecture,
 performance optimizations, etc.
 
 At the heart of many interesting software engineering problems is the question of
 reachability, i.e., whether a statement in the code may be executed in some scenario.
 For example, compilers try to identify and eliminate dead code,
 model checkers explore reachable model states exhaustively up to a given bound,
-program verification systems (e.g., ESC/Java or Spec\#) prove that faulty statements are unreachable,
+program verification systems (e.g., ESC/Java or Spec\# \cite{flanagan02extended,barnett04spec}) prove that faulty statements are unreachable,
 and test generation tools try to trigger runtime exceptions and assertion violations
 and try to achieve high code coverage.
 
 Research in automatic software engineering tools and techniques has made a lot 
 of progress in the last decades. For example, many papers have described new tools
-and techniques for automatic bug finding. Examples include JCrasher \cite{csallner04jcrasher}, 
-Randoop \cite{}, Pex \cite{tillmann08pex}, and many more. What many of these papers have in 
-common is that it is very hard to compare them with each other. Tool implementations
+and techniques for automatic bug finding. 
+Some recent examples include JCrasher, Eclat, and Symclat for Java 
+\cite{csallner04jcrasher,pacheco05eclat,damorim06empirical}
+and Randoop and Pex for C\# 
+\cite{pacheco07feedback,tillmann08pex}. 
+What many of these papers have in common is that it is 
+hard to compare them with each other. Tool implementations
 target different programming languages (i.e., Java and C\#) and use different
-subject programs for evaluation. What is lacking is a common benchmark that
-can be easily used and reused by many researchers to evaluate and compare
-program analysis tools.
+subject programs in their evaluation. 
+Lacking is a common benchmark that
+can be easily used and reused by many researchers to evaluate and compare tools and techniques.
+
+The software-artifact infrastructure repository 
+(SIR)~\cite{do05supporting} is a related effort.
+
+An existing benchmark suite can be complemented by a random benchmark generator, similar to the ones proposed for evaluating
+just-in-time (JIT) compilers~\cite{goldreich86how,yoshikawa03random}.
 
 This paper defines a common notation for writing benchmarks for tools 
 that decide Reachability in Object Oriented ProgramS (\co{Roops}).
@@ -35,7 +45,7 @@ the community to share and build upon each others benchmarks, and enable
 researchers to compare empirical results.
 
 The \co{Roops} notation is flexible and easily adopted for different target 
-environments. The notation is a bit clumsy---but it allows targetting Java 
+environments. The notation is a bit clumsy---but it allows targeting Java 
 and C\# and possible other languages at the same time, and also allows supporting different testing 
 environments such as JUnit or others. A design principle of the \co{Roops} 
 notation is that such translation can be achieved by simply using regular 
@@ -53,6 +63,20 @@ such test cases are Unit Tests\cite{}.
 
 We envision that (open source) libraries will read and write programs in the
 \co{Roops} notation to help newcomers build new tools.
+
+
+\subsection{Competition}
+
+The common Roops notation enables competitions,
+much like other research communities do, such as
+the verification community with the Satisfiability Modulo Theories Competition
+(SMT-COMP)~\cite{barrett05smt-comp,barrett05design},
+the cryptography community with the AES competition
+\cite{nechvatal01report,daemen02design} and the programming language community with the PoplMark challenge
+\cite{aydemir05mechanized}.
+
+
+\subsection{Availability}
 
 We maintain all \co{Roops} benchmarks, associated tools (benchmark generators, 
 converters, etc.), and documentation under an open-source (MIT) license in the
