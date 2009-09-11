@@ -49,7 +49,7 @@ public class IntArrNoEx {
 			// for(Node m: Nodes.rootNodes){ // No need for other checks e.g., <= >= .. for array initialization
 				 
 				 output += "\t//$goals 2\n";
-				 output += "\t//benchmark\n";
+				 output += "\t//$benchmark\n";
 				 ////output += "\tpublic void ArrayInitialization"+ m.name+"()\n\t{\n";
 				  output += "\tpublic void ArrayInitialization()\n\t{\n";
 				 
@@ -65,7 +65,7 @@ public class IntArrNoEx {
 				 			 
 			 //}
 			output += "\t//$goals 3\n";
-			output += "\t//benchmark\n";
+			output += "\t//$benchmark\n";
 			
 			output += "\tpublic void ArrayInitializationVariableSize(int size)\n\t{\n";
 			output += "\t\tif(size > 0)\n\t\t{\n";
@@ -77,7 +77,7 @@ public class IntArrNoEx {
 			
 			 //ArrayInitializationVariableSizeVariableIndex(int size, int index)
 			output += "\t//$goals 3\n";
-			output += "\t//benchmark\n";
+			output += "\t//$benchmark\n";
 			output += "\tpublic void ArrayInitializationVariableSizeVariableIndex(int size, int index)\n\t{\n";
 		    output += "\t\tif( (size > 0) && (index >= 0) && (index < size) )\n\t\t{\n";
 		    output += "\t\t\tint[] a = new int[size];\n";
@@ -86,7 +86,7 @@ public class IntArrNoEx {
 		    output += "\t\t\telse\n\t\t\t{ /*$goal 1*/}\n\t\t}\n\t\telse\n\t\t{ /*$goal 2 */}\n\t}\n\n";
 		    
 		    output += "\t//$goals 2\n";
-			output += "\t//benchmark\n";
+			output += "\t//$benchmark\n";
 
 			// public void DirectWriteFollowedByDirectRead(int v)
 			output += "\tpublic void DirectWriteFollowedByDirectRead(int v)\n\t{\n";
@@ -99,7 +99,7 @@ public class IntArrNoEx {
 			
 			// public void IndirectWriteFollowedByIndirectRead(int i, int j, int v)
 			output += "\t//$goals 3\n";
-			output += "\t//benchmark\n";
+			output += "\t//$benchmark\n";
 			output += "\tpublic void InDirectWriteFollowedByIndirectRead(int i, int j, int v)\n\t{\n";
 			String temp = Integer.toString(randInt = randGen.nextInt(32767));
 			output += "\t\tint[] a = new int[" + temp+ "];\n";
