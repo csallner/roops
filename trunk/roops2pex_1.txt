@@ -1,0 +1,22 @@
+//\$category\s*(\S+)
+namespace $1 { 
+//\$goals\s*(\d+)
+[Microsoft.Pex.Framework.Goals.PexExpectedGoals("Count=$1")]
+//\$benchmarkclass
+[Microsoft.Pex.Framework.PexClass]
+//\$benchmark
+[Microsoft.Pex.Framework.PexMethod]
+\{\s*/\*\s*\$goal\s*(\d+)\s*\*/\}
+{Microsoft.Pex.Framework.Goals.PexGoal.Reached($1); System.Console.WriteLine("Goal $1 is reached.");}
+\{\s*/\*\s*\$goal\s*(\d+)\s*(\S+)\s*\*/\}
+{Microsoft.Pex.Framework.Goals.PexGoal.Reached($1); System.Console.WriteLine("Goal $1 is reached.");}
+#region\s*(\S+)
+#region $1
+#endregion
+#endregion
+extends/\*\s*\$:\s*\*/
+:
+implements/\*\s*\$,\s*\*/
+,
+//\$endcategory\s*(\S+)
+}
