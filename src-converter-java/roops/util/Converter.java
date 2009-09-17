@@ -31,10 +31,20 @@ public class Converter {
 		return line;
 	}
 	
+	protected static String insertMethodNameToLine(String line, String methodName)
+	{
+		if(line.contains("Console.WriteLine(\""))
+		{
+			return line.replace("Console.WriteLine(\"", "Console.WriteLine(\"" + methodName + " - ");
+		}
+		return line;
+	}
 	
 	protected static void transformFile(File fileIn, File fileOut) {
 		BufferedReader in = null;
 		BufferedWriter out = null;
+		String methodName = null;
+	
 		
 		try{
 			in = new BufferedReader(new FileReader(fileIn));
@@ -42,6 +52,13 @@ public class Converter {
 			while(in.ready()){ 
 				String line = in.readLine();
 				line = transformLine(line);
+				
+				if(line.matches("\\s*public\\s*void\\s*[a-zA-Z_0-9]+\\s*([\\s\\S]*)\\s*"))
+				{
+					 methodName = line.replaceAll("\\s*public\\s*void\\s*([a-zA-Z_0-9]+)\\s*([\\s\\S]*)\\s*", "$1");
+				}
+				
+				line = insertMethodNameToLine(line, methodName);
 				out.write(line);
 				out.newLine();
 			} 
