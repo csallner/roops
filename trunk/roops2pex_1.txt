@@ -7,9 +7,9 @@ namespace $1 {
 //\$benchmark
 [Microsoft.Pex.Framework.PexMethod]
 \{\s*/\*\s*\$goal\s*(\d+)\s*\*/\}
-{Microsoft.Pex.Framework.Goals.PexGoal.Reached($1); System.Console.WriteLine("Goal $1 is reached.");}
+{Microsoft.Pex.Framework.Goals.PexGoal.Reached($1); WriteToFile("Goal reached: $1");}
 \{\s*/\*\s*\$goal\s*(\d+)\s*(\S+)\s*\*/\}
-{Microsoft.Pex.Framework.Goals.PexGoal.Reached($1); System.Console.WriteLine("Goal $1 is reached.");}
+{Microsoft.Pex.Framework.Goals.PexGoal.Reached($1); WriteToFile("Goal reached: $1");}
 #region\s*(\S+)
 #region $1
 #endregion
