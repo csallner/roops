@@ -31,12 +31,13 @@ public class Converter {
 		return line;
 	}
 	
-	protected static String insertMethodNameToLine(String line, String methodName)
+	protected static String rebuildLine(String line, String methodName, String params, String numberOfGoals)
 	{
-		if(line.contains("Console.WriteLine(\""))
+		if(line.contains("WriteToFile(\""))
 		{
-			return line.replace("Console.WriteLine(\"", "Console.WriteLine(\"" + methodName + " - ");
+			return line.replace("WriteToFile(\"", "WriteToFile(\"Method: " + methodName + params + " -- Number of Goals: " + numberOfGoals + " -- ");
 		}
+		
 		return line;
 	}
 	
@@ -44,21 +45,47 @@ public class Converter {
 		BufferedReader in = null;
 		BufferedWriter out = null;
 		String methodName = null;
-	
+		String numberOfGoals = null;
+		String params = null;
+		String className = null;
+		Boolean classKeywordFound = false; 
 		
 		try{
 			in = new BufferedReader(new FileReader(fileIn));
 			out = new BufferedWriter(new FileWriter(fileOut));
 			while(in.ready()){ 
-				String line = in.readLine();
-				line = transformLine(line);
 				
-				if(line.matches("\\s*public\\s*void\\s*[a-zA-Z_0-9]+\\s*([\\s\\S]*)\\s*"))
+				String line = in.readLine();
+
+				if(line.matches("\\s*//\\$goals\\s*(\\d+)"))
 				{
-					 methodName = line.replaceAll("\\s*public\\s*void\\s*([a-zA-Z_0-9]+)\\s*([\\s\\S]*)\\s*", "$1");
+					numberOfGoals = line.replaceAll("\\s*//\\$goals\\s*(\\d+)", "$1");
 				}
 				
-				line = insertMethodNameToLine(line, methodName);
+				else if(line.matches("\\s*public\\s*void\\s*[a-zA-Z_0-9]+\\s*([\\s\\S]*)\\s*"))
+				{
+					 methodName = line.replaceAll("\\s*public\\s*void\\s*([a-zA-Z_0-9]+)\\s*([\\s\\S]*)\\s*", "$1");
+					 params = line.replaceAll("\\s*public\\s*void\\s*[a-zA-Z_0-9]+\\s*([\\s\\S]*+)\\s*", "$1");
+				}
+
+				else if(line.matches("\\s*public\\s*class\\s*[a-zA-Z_0-9]+\\s*"))
+				{
+					 className = line.replaceAll("\\s*public\\s*class\\s*([a-zA-Z_0-9]+)\\s*", "$1");
+					 classKeywordFound = true;
+				}
+
+				line = transformLine(line);	
+				line = rebuildLine(line, methodName, params, numberOfGoals);
+				
+				if(classKeywordFound)
+				{
+					if(line.contains("{"))
+					{
+						line = line.replace("{", "{\\n    private void WriteToFile(string textToWrite){ string outputFileFullPath = \"c:\\\\" + className + ".txt\";  System.IO.StreamWriter log_out;  try{log_out = new System.IO.StreamWriter(outputFileFullPath, true);}  catch(System.IO.IOException exc){System.Console.WriteLine(\"Error: \" + exc.Message + \"Cannot open file.\");return;}  System.Console.SetOut(log_out);System.Console.WriteLine(textToWrite);log_out.Close();  }");
+						classKeywordFound = false;
+					}
+				}
+				
 				out.write(line);
 				out.newLine();
 			} 
