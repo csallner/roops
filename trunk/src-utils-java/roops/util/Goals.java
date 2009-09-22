@@ -76,7 +76,7 @@ public class Goals {
     methodGoals.add(reachedGoal);
 	}
 	
-	public static String print() {
+	public static String printReachedGoals() {
 	  StringBuffer sb = new StringBuffer();
 	  for (Map<String,Set<ReachedGoal>> classGoals: reachedGoals.values())
 	    for (Set<ReachedGoal> methodGoals: classGoals.values())
@@ -84,5 +84,23 @@ public class Goals {
 	        sb.append(goal+"\n");
 	  
 	  return sb.toString();
+	}
+	
+	public static String printReachedGoalsSummary() {
+	  StringBuffer sb = new StringBuffer();
+	  for (Map<String,Set<ReachedGoal>> classGoals: reachedGoals.values()) {
+	  	String className = "";
+	  	int classGoalCount = 0;
+	  
+	    for (Set<ReachedGoal> methodGoals: classGoals.values()) {
+	    	ReachedGoal firstGoal = methodGoals.iterator().next();
+	    	className = firstGoal.className;
+	      sb.append(className+" "+firstGoal.methodName+" "+methodGoals.size()+"\n");
+	      classGoalCount += methodGoals.size();
+	    }
+	    
+	    sb.append(className+" "+classGoalCount+"\n");
+	  }
+	  return sb.toString();		
 	}
 }
