@@ -81,7 +81,7 @@ public class Converter {
 				{
 					if(line.contains("{"))
 					{
-						line = line.replace("{", "{\\n    private void WriteToFile(string textToWrite){ string outputFileFullPath = \"c:\\\\" + className + ".txt\";  System.IO.StreamWriter log_out;  try{log_out = new System.IO.StreamWriter(outputFileFullPath, true);}  catch(System.IO.IOException exc){System.Console.WriteLine(\"Error: \" + exc.Message + \"Cannot open file.\");return;}  System.Console.SetOut(log_out);System.Console.WriteLine(textToWrite);log_out.Close();  }");
+						line = line.replace("{", "{    private void WriteToFile(string textToWrite){ string outputFileFullPath = \"c:\\\\" + className + ".txt\";  System.IO.StreamWriter log_out;  try{log_out = new System.IO.StreamWriter(outputFileFullPath, true);}  catch(System.IO.IOException exc){System.Console.WriteLine(\"Error: \" + exc.Message + \"Cannot open file.\");return;}  System.Console.SetOut(log_out);System.Console.WriteLine(textToWrite);log_out.Close();  }");
 						classKeywordFound = false;
 					}
 				}
