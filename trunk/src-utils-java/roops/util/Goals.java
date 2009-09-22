@@ -1,9 +1,9 @@
 package roops.util;
 
-import java.lang.reflect.Member;
-import java.util.BitSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Counts the number of goals reached by a state-space
@@ -14,36 +14,19 @@ import java.util.Map;
  */
 public class Goals {
 
-	protected final static Map<Member, BitSet> memberGoalsReached =
-		new HashMap<Member, BitSet>();
-	protected final static BitSet reachedGoals = new BitSet();
-	
+  /**
+   * className --> (methodName --> goal*))
+   */
+  protected final static Map<String, Map<String, Set<ReachedGoal>>> reachedGoals =
+    new HashMap<String, Map<String, Set<ReachedGoal>>>();
+  	
 	/**
 	 * Reset all goals to "not reached"
 	 */
 	public static void resetGoals() {
 		reachedGoals.clear();
-	}
+	}		
 	
-	/**
-	 * Reset all goals to "not reached"
-	 */
-	public static void storeAndResetGoals(Member member) {
-		if (member!=null)
-			memberGoalsReached.put(member, (BitSet) reachedGoals.clone());
-
-		reachedGoals.clear();
-	}
-	
-	
-	/**
-	 * @return number of reached goals stored for member,
-	 * else -1
-	 */
-	public static int getNrGoalsReached(Member member) {
-		BitSet bitSet = memberGoalsReached.get(member);
-		return (bitSet==null)? -1 : bitSet.cardinality(); 
-	}
 	
 	/**
 	 * Record that we reached goal number goalIndex.
@@ -51,18 +34,55 @@ public class Goals {
 	 * @param goalIndex non-negative number
 	 */
 	public static void reached(int goalIndex) {
-		reached(goalIndex, Verdict.UNKNOWN);
+		reachedInternal(goalIndex, Verdict.UNKNOWN);
 	}
-	
+		
 	public static void reached(int goalIndex, Verdict reach) {
-		reachedGoals.set(goalIndex);
+	  reachedInternal(goalIndex, reach);
 	}
 	
-	/**
-	 * @return the number of goals recorded as reached, since the last
-	 * time resetGoals() was called.
-	 */
-	public static int getNrGoalsReached() {
-		return reachedGoals.cardinality();
+	protected static void reachedInternal(int goalIndex, Verdict reach) {
+    StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+    if (stack.length<4) {
+      System.out.println("Warning: could not record reached goal.");
+      return;
+    }
+    
+    String className = stack[3].getClassName(); 
+    String methodName = stack[3].getMethodName();
+    int lineNr = stack[3].getLineNumber();
+    if (className==null || methodName==null) {
+      System.out.println("Warning: could not record reached goal.");
+      return;
+    }
+    if (lineNr < 0)
+      System.out.println("Warning: cannot distinguish overloading.");
+    
+    ReachedGoal reachedGoal = new ReachedGoal(
+        className, methodName, lineNr, goalIndex);
+    
+    Map<String,Set<ReachedGoal>> classMembers = reachedGoals.get(className);
+    if (classMembers==null) {
+      classMembers = new HashMap<String,Set<ReachedGoal>>();
+      reachedGoals.put(className, classMembers);
+    }
+    
+    Set<ReachedGoal> methodGoals = classMembers.get(methodName);
+    if (methodGoals==null) {
+      methodGoals = new HashSet<ReachedGoal>();
+      classMembers.put(methodName, methodGoals);
+    }
+    
+    methodGoals.add(reachedGoal);
+	}
+	
+	public static String print() {
+	  StringBuffer sb = new StringBuffer();
+	  for (Map<String,Set<ReachedGoal>> classGoals: reachedGoals.values())
+	    for (Set<ReachedGoal> methodGoals: classGoals.values())
+	      for (ReachedGoal goal: methodGoals)
+	        sb.append(goal+"\n");
+	  
+	  return sb.toString();
 	}
 }
