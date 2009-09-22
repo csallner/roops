@@ -1,7 +1,7 @@
 //\$category\s*(\S+)
 namespace $1 { 
 //\$goals\s*(\d+)
-[Microsoft.Pex.Framework.Goals.PexExpectedGoals("Count=$1")]
+[Microsoft.Pex.Framework.Goals.PexExpectedGoals(Count=$1)]
 //\$benchmarkclass
 [Microsoft.Pex.Framework.PexClass]
 //\$benchmark
