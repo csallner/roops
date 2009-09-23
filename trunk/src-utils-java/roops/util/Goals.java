@@ -17,7 +17,7 @@ public class Goals {
   /**
    * className --> (methodName --> goal*))
    */
-  protected final static Map<String, Map<String, Set<ReachedGoal>>> reachedGoals =
+  private final static Map<String, Map<String, Set<ReachedGoal>>> reachedGoals =
     new HashMap<String, Map<String, Set<ReachedGoal>>>();
   	
 	/**
