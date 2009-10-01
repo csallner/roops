@@ -81,7 +81,7 @@ public class Goals {
 	  for (Map<String,Set<ReachedGoal>> classGoals: reachedGoals.values())
 	    for (Set<ReachedGoal> methodGoals: classGoals.values())
 	      for (ReachedGoal goal: methodGoals)
-	        sb.append(goal+"\n");
+	        sb.append(goal+"\r\n");
 	  
 	  return sb.toString();
 	}
@@ -95,11 +95,11 @@ public class Goals {
 	    for (Set<ReachedGoal> methodGoals: classGoals.values()) {
 	    	ReachedGoal firstGoal = methodGoals.iterator().next();
 	    	className = firstGoal.className;
-	      sb.append(className+" "+firstGoal.methodName+" "+methodGoals.size()+"\n");
+	      sb.append(className+" "+firstGoal.methodName+" "+methodGoals.size()+"\r\n");
 	      classGoalCount += methodGoals.size();
 	    }
 	    
-	    sb.append(className+" "+classGoalCount+"\n");
+	    sb.append(className+" "+classGoalCount+"\r\n");
 	  }
 	  return sb.toString();		
 	}

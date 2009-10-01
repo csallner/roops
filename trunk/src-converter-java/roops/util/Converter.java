@@ -31,7 +31,7 @@ public class Converter {
 		return line;
 	}
 	
-	protected static String rebuildLine(String line, String methodName, String params, String numberOfGoals)
+	protected static String rebuildLineForPex(String line, String methodName, String params, String numberOfGoals)
 	{
 		if(line.contains("WriteToFile(\""))
 		{
@@ -71,21 +71,11 @@ public class Converter {
 				else if(line.matches("\\s*public\\s*class\\s*[a-zA-Z_0-9]+\\s*"))
 				{
 					 className = line.replaceAll("\\s*public\\s*class\\s*([a-zA-Z_0-9]+)\\s*", "$1");
-					 classKeywordFound = true;
 				}
 
 				line = transformLine(line);	
-				line = rebuildLine(line, methodName, params, numberOfGoals);
-				
-				if(classKeywordFound)
-				{
-					if(line.contains("{"))
-					{
-						line = line.replace("{", "{    private void WriteToFile(string textToWrite){ string outputFileFullPath = \"c:\\\\" + className + ".txt\";  System.IO.StreamWriter log_out;  try{log_out = new System.IO.StreamWriter(outputFileFullPath, true);}  catch(System.IO.IOException exc){System.Console.WriteLine(\"Error: \" + exc.Message + \"Cannot open file.\");return;}  System.Console.SetOut(log_out);System.Console.WriteLine(textToWrite);log_out.Close();  }");
-						classKeywordFound = false;
-					}
-				}
-				
+				line = rebuildLineForPex(line, methodName, params, numberOfGoals);
+						
 				out.write(line);
 				out.newLine();
 			} 
