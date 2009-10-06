@@ -81,6 +81,24 @@ public class Goals {
     methodGoals.add(reachedGoal);
 	}
 	
+	/**
+	 * @param className fully qualified class name as returned by
+	 * {@link StackTraceElement#getClassName()}.
+	 * 
+	 * @return number of distinct goals reached in className, 
+	 * since last call to {@link #resetGoals()}.
+	 */
+	public static int getNrReachedGoals(String className) {
+	  int classGoalCount = 0;
+	  Map<String,Set<ReachedGoal>> classGoals = reachedGoals.get(className);
+	  if (classGoals != null)
+	  	for (Set<ReachedGoal> methodGoals: classGoals.values())
+	  		classGoalCount += methodGoals.size();
+	  
+	  return classGoalCount;
+	}
+
+
 	public static String printReachedGoals() {
 	  final StringBuilder sb = new StringBuilder();
 	  for (Map<String,Set<ReachedGoal>> classGoals: reachedGoals.values())
