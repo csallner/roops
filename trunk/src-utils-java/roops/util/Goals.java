@@ -14,6 +14,11 @@ import java.util.Set;
  */
 public class Goals {
 
+	protected final static String NL = System.getProperty("line.separator");
+	protected static void newline(StringBuilder sb) {
+		sb.append(NL);
+	}
+	
   /**
    * className --> (methodName --> goal*))
    */
@@ -77,17 +82,20 @@ public class Goals {
 	}
 	
 	public static String printReachedGoals() {
-	  StringBuffer sb = new StringBuffer();
+	  final StringBuilder sb = new StringBuilder();
 	  for (Map<String,Set<ReachedGoal>> classGoals: reachedGoals.values())
 	    for (Set<ReachedGoal> methodGoals: classGoals.values())
-	      for (ReachedGoal goal: methodGoals)
-	        sb.append(goal+"\r\n");
+	      for (ReachedGoal goal: methodGoals) {
+	        sb.append(goal);
+	        newline(sb);
+	      }
 	  
 	  return sb.toString();
 	}
 	
 	public static String printReachedGoalsSummary() {
-	  StringBuffer sb = new StringBuffer();
+	  final StringBuilder sb = new StringBuilder();
+	  int totalGoalCount = 0;
 	  for (Map<String,Set<ReachedGoal>> classGoals: reachedGoals.values()) {
 	  	String className = "";
 	  	int classGoalCount = 0;
@@ -95,12 +103,17 @@ public class Goals {
 	    for (Set<ReachedGoal> methodGoals: classGoals.values()) {
 	    	ReachedGoal firstGoal = methodGoals.iterator().next();
 	    	className = firstGoal.className;
-	      sb.append(className+" "+firstGoal.methodName+" "+methodGoals.size()+"\r\n");
+	      sb.append(className+" "+firstGoal.methodName+" "+methodGoals.size());
+	      newline(sb);
 	      classGoalCount += methodGoals.size();
 	    }
 	    
-	    sb.append(className+" "+classGoalCount+"\r\n");
+	    sb.append(className+" "+classGoalCount);
+	    newline(sb);
+	    totalGoalCount += classGoalCount;
 	  }
+	  sb.append("total "+totalGoalCount);
+	  newline(sb);
 	  return sb.toString();		
 	}
 }
