@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="src-converter-java"/>
 	<classpathentry kind="src" path="src-utils-java"/>
 	<classpathentry kind="src" path="src-generator-java"/>
+	<classpathentry kind="src" path="src-benchmarks-java-only"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
