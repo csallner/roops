@@ -111,16 +111,21 @@ public class Converter {
 	protected static void transformDir(File parentIn, File parentOut) {
 		File[] filesIn = parentIn.listFiles();
 		for (File fileIn: filesIn) {
-			String simpleName = changeExtension(fileIn.getName());
-			String fullNameOut = parentOut.getPath()+java.io.File.separator+simpleName;
-			File fileOut = new File(fullNameOut);
 			if (fileIn.isDirectory()) {
+			  if (fileIn.getName().startsWith("."))  // skip Subversion directories
+			    continue;
+		    File fileOut = new File(
+		        parentOut.getPath()+java.io.File.separator+fileIn.getName());
 				if (!fileOut.exists())
 					fileOut.mkdir();
 				transformDir(fileIn, fileOut);
 			}
-			else
-				transformFile(fileIn, fileOut);
+			else {
+		    String simpleName = changeExtension(fileIn.getName());
+		    String fullNameOut = parentOut.getPath()+java.io.File.separator+simpleName;
+		    File fileOut = new File(fullNameOut);
+		    transformFile(fileIn, fileOut);
+			}
 		}
 	}
 	

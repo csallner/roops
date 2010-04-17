@@ -4,7 +4,7 @@
 Author csallner@uta.edu (Christoph Csallner)
 -->
 
-<project basedir="." default="release-roops-src" name="Roops">
+<project basedir="." default="all" name="Roops">
 
   <!-- inc for major change -->
   <property name="version" value="0.1" /> 
@@ -32,12 +32,12 @@ Author csallner@uta.edu (Christoph Csallner)
  
   <target name="init">
     <buildnumber />
-  	<mkdir dir="${src-benchmarks-cs}"/>
-  	<mkdir dir="${src-benchmarks-java}"/>
 		<mkdir dir="${release}"/>
   </target>
 	
 	<target name="init-build" depends="init">
+  	<mkdir dir="${src-benchmarks-cs}"/>
+  	<mkdir dir="${src-benchmarks-java}"/>
 		<mkdir dir="${bin-java}"/>
   </target>
 	
