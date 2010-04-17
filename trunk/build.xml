@@ -32,6 +32,8 @@ Author csallner@uta.edu (Christoph Csallner)
  
   <target name="init">
     <buildnumber />
+  	<mkdir dir="${src-benchmarks-cs}"/>
+  	<mkdir dir="${src-benchmarks-java}"/>
 		<mkdir dir="${release}"/>
   </target>
 	
@@ -53,7 +55,7 @@ Author csallner@uta.edu (Christoph Csallner)
 		<java classname="roops.util.Converter" 
 			fork="true"
       classpath="${bin-java}">
-			<arg line="src-benchmarks-roops src-benchmarks-java roops2java.txt java"/>
+			<arg line="${src-benchmarks-roops} ${src-benchmarks-java} roops2java.txt java"/>
     </java>
 	</target>
 	
@@ -112,6 +114,8 @@ Author csallner@uta.edu (Christoph Csallner)
   <!-- Clean: Delete generated files --> 
 	
   <target name="clean">
+  	<delete dir="${src-benchmarks-cs}" />
+  	<delete dir="${src-benchmarks-java}" />
     <delete dir="${bin-java}" />
   </target>
 </project>
