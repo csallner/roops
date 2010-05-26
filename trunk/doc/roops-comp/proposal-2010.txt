@@ -1,0 +1,30 @@
+Proposal for an Experimental Competition
+
+One of the goals of the State-Space Exploration for Automated Testing (SSEAT) workshops is to organize a competition between automated testing tools. As a first step towards this goal, we propose for SSEAT 2010 a small "experimental" competition. Our goal is to keep this as simple as possible. We would just like to find out what works and what needs to be changed for a subsequent real competition. As a consequence, the results of this competition will certainly have serious limitations. Nevertheless, we believe it is worthwhile to start gathering some experience.
+
+The competition will compare testing tools based on how well they perform on a common benchmark. For this competition, the benchmark will be the Roops benchmark suite [Roops]. The Roops benchmark suite consists of a number of benchmark methods. Each benchmark method contains one or more goal statements. A testing tool will be compared based on how many such goal statements it can reach. We will also report the execution time needed by each testing tool.
+
+The Roops benchmarks are written in the Roops language. The Roops language is essentially a common subset of C# and Java. The motivation for this is that we would like to compare testing tools for Java with those for .Net programs (C#). The Roops repository contains a simple tool for translating the benchmarks from Roops into C# and Java. In the doc directory, the Roops repository contains the draft of a technical report that explains the details of Roops.
+
+Following are the technical details of the competition.
++ The deadline for entering the competition is July 10.
++ To enter the competition, submit a link to your automated testing tool to the SSEAT mailing list [SSEAT]. 
++ We will make an effort to run each submitted tool, but we cannot guarantee we will succeed.
++ We will abort long-running tools after some fixed amount of time.
++ The competition will be held on the laptop of one of the workshop participants.
++ The laptop will be running Windows 7, Vista, or XP.
++ The laptop will have installed the latest version of .Net and a JVM 1.6.
+
+Since this is an experimental competition, we will also accept self-evaluations of automated testing tools. In other words, you may run your tool on your own machine on the Roops benchmarks and report the results. Beware that we may add benchmarks to Roops up to the cut-off date, which is also July 10. For this competition, you do not need to submit any source code or bytecode of your SSEAT tool. We just require that you appear at the workshop, demo your tool, and discuss your results.
+
+So far, two tools have been entered into the competition:
++ Dsc by UT Arlington [Dsc].
++ Pex by Microsoft Research [Pex].
+
+Questions, comments, concerns, complaints, etc. should be directed to the SSEAT mailing list [SSEAT].
+
+References:
+[Dsc] http://ranger.uta.edu/~csallner/papers/islam10dsc+mock-abstract.html
+[Pex] http://research.microsoft.com/en-us/projects/pex
+[Roops] http://code.google.com/p/roops/
+[SSEAT] http://groups.google.com/group/sseat/
