@@ -14,13 +14,13 @@ can generate such a complex input.
 
 [1] http://sdg.csail.mit.edu/forge/plugin.html
 
-[2] Visser W., P\u{a}s\u{a}reanu C.~S., Pel\'anek R., 
-\emph{Test Input Generation for Java Containers using State Matching}, 
-in ISSTA 2006, pp.~37--48, 2006.
+[2] Visser W., Pasareanu C.S., Pelanek R., Test Input Generation for Java
+Containers using State Matching, in ISSTA 2006, pp.37-48, 2006.
 
 [3] Galeotti J.P., Rosner N., Lopez Pombo C.G. and Frias M.F.
-\emph{Analysis of Invariants for Efficient Bounded Verification}, in 
+Analysis of Invariants for Efficient Bounded Verification, in 
 ISSTA 2010, to appear.
+
 ***********************************************************************/
 
 //$category roops.core.objects
