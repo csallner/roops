@@ -84,7 +84,8 @@ public class NodeCachingLinkedList {
 	 */
 	protected boolean isCacheFull() {
 		//return cacheSize >= maximumCacheSize; 
-		return cacheSize > maximumCacheSize; //<- BUG SEEDED
+		//return cacheSize > maximumCacheSize; //<- BUG SEEDED 1
+		return cacheSize < maximumCacheSize; //<- BUG SEEDED 1
 	}
 
 	/**
@@ -95,7 +96,7 @@ public class NodeCachingLinkedList {
 	 */
 	protected void addNodeToCache(LinkedListNode node) {
 		if (isCacheFull()) {
-			{/*$goal 7*/}
+			{/*$goal 7 unreachable*/}
 			// don't cache the node.
 			return;
 		}
