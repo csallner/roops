@@ -84,8 +84,7 @@ public class NodeCachingLinkedList {
 	 */
 	protected boolean isCacheFull() {
 		//return cacheSize >= maximumCacheSize; 
-		//return cacheSize > maximumCacheSize; //<- BUG SEEDED 1
-		return cacheSize < maximumCacheSize; //<- BUG SEEDED 1
+		return cacheSize > maximumCacheSize; //<- BUG SEEDED
 	}
 
 	/**
