@@ -110,6 +110,11 @@ public class RoopsClassAnalyzer extends ClassAnalyzer {
 						okay = false;
 						break;	
 						
+					case Opcodes.opc_ldc2_w:
+						System.out.println("found operation on double/long in method: "+getFullName(methodInfo));
+						okay = false;
+						break;	
+						
 					/* Do not allow any operation on float values */
 					case Opcodes.opc_f2d:
 					case Opcodes.opc_f2i:
