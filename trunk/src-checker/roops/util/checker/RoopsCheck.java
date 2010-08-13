@@ -158,12 +158,13 @@ public class RoopsCheck extends Options {
 
 			GlobalOptions.err.println(className);
 
-			/* The next two lines are the only ones that are changed 
+			/* The next few lines are the only ones that are changed 
 			 * from the original Jode code. */
 			RoopsClassAnalyzer clazzAna = new RoopsClassAnalyzer(clazz, imports);
-			clazzAna.checkRoopsRules();
-			
-			clazzAna.dumpJavaFile(writer);
+			boolean okay = clazzAna.checkRoopsRules();
+			if (okay)
+				clazzAna.dumpJavaFile(writer);
+			/* END changes to code copied from Jode */
 
 			if (destZip != null) {
 				writer.flush();
