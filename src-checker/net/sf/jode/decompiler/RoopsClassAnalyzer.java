@@ -77,7 +77,107 @@ public class RoopsClassAnalyzer extends ClassAnalyzer {
 					  	okay = false;
 					  }
 						break;
+						
+						
+						/* Do not allow any operation on double values */
+					case Opcodes.opc_d2f:
+					case Opcodes.opc_d2i:
+					case Opcodes.opc_d2l:
+					case Opcodes.opc_dadd:
+					case Opcodes.opc_daload:
+					case Opcodes.opc_dastore:
+					case Opcodes.opc_dcmpg:
+					case Opcodes.opc_dcmpl:
+					case Opcodes.opc_dconst_0:
+					case Opcodes.opc_dconst_1:
+					case Opcodes.opc_ddiv:
+					case Opcodes.opc_dload:
+					case Opcodes.opc_dload_0:
+					case Opcodes.opc_dload_1:
+					case Opcodes.opc_dload_2:
+					case Opcodes.opc_dload_3:
+					case Opcodes.opc_dmul:
+					case Opcodes.opc_dneg:
+					case Opcodes.opc_drem:
+					case Opcodes.opc_dreturn:
+					case Opcodes.opc_dstore:
+					case Opcodes.opc_dstore_0:
+					case Opcodes.opc_dstore_1:
+					case Opcodes.opc_dstore_2:
+					case Opcodes.opc_dstore_3:
+					case Opcodes.opc_dsub:
+						System.out.println("found operation on double in method: "+getFullName(methodInfo));
+						okay = false;
+						break;	
+						
+					/* Do not allow any operation on float values */
+					case Opcodes.opc_f2d:
+					case Opcodes.opc_f2i:
+					case Opcodes.opc_f2l:
+					case Opcodes.opc_fadd:
+					case Opcodes.opc_faload:
+					case Opcodes.opc_fastore:
+					case Opcodes.opc_fcmpg:
+					case Opcodes.opc_fcmpl:
+					case Opcodes.opc_fconst_0:
+					case Opcodes.opc_fconst_1:
+					case Opcodes.opc_fconst_2:
+					case Opcodes.opc_fdiv:
+					case Opcodes.opc_fload:
+					case Opcodes.opc_fload_0:
+					case Opcodes.opc_fload_1:
+					case Opcodes.opc_fload_2:
+					case Opcodes.opc_fload_3:
+					case Opcodes.opc_fmul:
+					case Opcodes.opc_fneg:
+					case Opcodes.opc_frem:
+					case Opcodes.opc_freturn:
+					case Opcodes.opc_fstore:
+					case Opcodes.opc_fstore_0:
+					case Opcodes.opc_fstore_1:
+					case Opcodes.opc_fstore_2:
+					case Opcodes.opc_fstore_3:
+					case Opcodes.opc_fsub:
+						System.out.println("found operation on float in method: "+getFullName(methodInfo));
+						okay = false;
+						break;					
 
+					/* Do not allow any operation on long values */
+					case Opcodes.opc_l2d:
+					case Opcodes.opc_l2f:
+					case Opcodes.opc_l2i:
+					case Opcodes.opc_ladd:
+					case Opcodes.opc_laload:
+					case Opcodes.opc_land:
+					case Opcodes.opc_lastore:
+					case Opcodes.opc_lcmp:
+					case Opcodes.opc_lconst_0:
+					case Opcodes.opc_lconst_1:
+					case Opcodes.opc_ldiv:
+					case Opcodes.opc_lload:
+					case Opcodes.opc_lload_0:
+					case Opcodes.opc_lload_1:
+					case Opcodes.opc_lload_2:
+					case Opcodes.opc_lload_3:
+					case Opcodes.opc_lmul:
+					case Opcodes.opc_lneg:
+					case Opcodes.opc_lor:
+					case Opcodes.opc_lrem:
+					case Opcodes.opc_lreturn:
+					case Opcodes.opc_lshl:
+					case Opcodes.opc_lshr:
+					case Opcodes.opc_lstore:
+					case Opcodes.opc_lstore_0:
+					case Opcodes.opc_lstore_1:
+					case Opcodes.opc_lstore_2:
+					case Opcodes.opc_lstore_3:
+					case Opcodes.opc_lsub:
+					case Opcodes.opc_lushr:
+					case Opcodes.opc_lxor:
+						System.out.println("found operation on long in method: "+getFullName(methodInfo));
+						okay = false;
+						break;
+						
 					default:
 						break;
 					} 
