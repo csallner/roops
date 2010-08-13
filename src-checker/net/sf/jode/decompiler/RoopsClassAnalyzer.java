@@ -43,7 +43,9 @@ public class RoopsClassAnalyzer extends ClassAnalyzer {
 		
 		MethodInfo[] methodInfos = clazz.getMethods();		
 		if (methodInfos==null)
-			return true;		
+			return true;
+		
+		boolean okay = true;
 		
 		for (MethodInfo methodInfo: methodInfos) 
 		{
@@ -65,9 +67,15 @@ public class RoopsClassAnalyzer extends ClassAnalyzer {
 					case Opcodes.opc_invokevirtual:
 						Reference ref = instruction.getReference();						
 					  if ("equals".equals(ref.getName()) && "(Ljava/lang/Object;)Z".equals(ref.getType()))
+					  {
 					  	System.out.println("found call to equals(Object) in method: "+getFullName(methodInfo));
+					  	okay = false;
+					  }
 					  else if ("hashCode".equals(ref.getName()) && "()I".equals(ref.getType()))
+					  {
 					  	System.out.println("found call to hashCode() in method: "+getFullName(methodInfo));
+					  	okay = false;
+					  }
 						break;
 
 					default:
@@ -78,6 +86,6 @@ public class RoopsClassAnalyzer extends ClassAnalyzer {
 			
 		}
 		
-		return true;
+		return okay;
 	}
 }
