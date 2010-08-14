@@ -2,6 +2,8 @@ package net.sf.jode.decompiler;
 
 import java.io.IOException;
 
+import com.sun.istack.internal.NotNull;
+
 import net.sf.jode.bytecode.BasicBlocks;
 import net.sf.jode.bytecode.Block;
 import net.sf.jode.bytecode.ClassFormatException;
@@ -31,20 +33,12 @@ public class RoopsClassAnalyzer extends ClassAnalyzer {
 		return clazz.getName()+"."+mInfo.getName()+mInfo.getType();
 	}
 	
+	
 	/**
 	 * Sift through all instructions of all declared methods
-	 * 
-	 * @return if the wrapped class satisfies the Roops language restrictions.
 	 */
-	public boolean checkRoopsRules()
+	protected boolean checkRoopsRules(MethodInfo[] methodInfos)
 	{
-		if (clazz==null)
-			return false;
-		
-		MethodInfo[] methodInfos = clazz.getMethods();		
-		if (methodInfos==null)
-			return true;
-		
 		boolean okay = true;
 		
 		for (MethodInfo methodInfo: methodInfos) 
@@ -187,10 +181,33 @@ public class RoopsClassAnalyzer extends ClassAnalyzer {
 						break;
 					} 
 				}
-			}
-			
-		}
-		
+			}			
+		}		
 		return okay;
 	}
+	
+	
+	/**
+	 * 
+	 * 
+	 * @return if the wrapped class satisfies the Roops language restrictions.
+	 */
+	public boolean checkRoopsRules()
+	{
+		if (clazz==null)
+			return false;
+		
+		boolean okay = true;
+		
+		okay &= checkRoopsRules(clazz.getMethods());
+		
+		// clazz.get
+
+		return okay;
+	}
+	
+	
+  public void dumpCSharpFile(TabbedPrintWriter writer) throws IOException {    
+  	dumpJavaFile(writer, null);
+  }
 }
