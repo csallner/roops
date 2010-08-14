@@ -1,6 +1,7 @@
 package net.sf.jode.decompiler;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import com.sun.istack.internal.NotNull;
 
@@ -13,12 +14,20 @@ import net.sf.jode.bytecode.MethodInfo;
 import net.sf.jode.bytecode.Reference;
 import net.sf.jode.decompiler.ClassAnalyzer;
 import net.sf.jode.decompiler.ImportHandler;
+import net.sf.jode.util.SimpleSet;
 
 /**
  * 
  * @author csallner@uta.edu (Christoph Csallner)
  */
 public class RoopsClassAnalyzer extends ClassAnalyzer {
+
+  /**
+   * FIXME: copy-and-paste from super class
+   * 
+   * The complexity for initializing a class.
+   */
+  protected static double INITIALIZE_COMPLEXITY = 0.03;
 	
 	/**
 	 * Constructor
@@ -28,9 +37,31 @@ public class RoopsClassAnalyzer extends ClassAnalyzer {
   {
 		super(null, clazz, imports);
   }
+	
+	protected String getClassName() {
+		return clazz.getName();
+	}
 
 	protected String getFullName(MethodInfo mInfo){
-		return clazz.getName()+"."+mInfo.getName()+mInfo.getType();
+		return getClassName()+"."+mInfo.getName()+mInfo.getType();
+	}
+	
+	
+	protected boolean checkRoopsRulesImports(Iterator<String> iter)
+	{
+		boolean res = true;
+		
+    while (iter.hasNext()) 
+    {
+    	String pkgName = (String)iter.next();
+    	if (pkgName.startsWith("java.util"))
+    	{
+    		res = false;
+    		System.out.println("found import java.util in class: "+getClassName());
+    	}
+    }
+    
+    return res;
 	}
 	
 	
@@ -206,8 +237,41 @@ public class RoopsClassAnalyzer extends ClassAnalyzer {
 		return okay;
 	}
 	
+	protected boolean okay = true;
 	
-  public void dumpCSharpFile(TabbedPrintWriter writer) throws IOException {    
-  	dumpJavaFile(writer, null);
-  }
+	/**
+	 * Add check of imports
+	 */
+	public void dumpJavaFile(TabbedPrintWriter writer, ProgressListener pl) 
+	throws IOException 
+	{    
+		imports.init(clazz.getName());
+		LocalInfo.init();
+		initialize();
+		double done = 0.05;
+		double scale = (0.75) * methodComplexity 
+		/ (methodComplexity + innerComplexity);
+		analyze(pl, INITIALIZE_COMPLEXITY, scale);
+		done += scale;
+		analyzeInnerClasses(pl, done, 0.8 - done);
+		makeDeclaration(new SimpleSet());
+		imports.dumpHeader(writer);
+		
+		
+		/* dirty trick to access package-visible field in
+		 * the ImportHandler class */
+		Iterator<String> iter = imports.imports.keySet().iterator();
+		if (! checkRoopsRulesImports(iter))
+		{
+			okay = false;
+			writer.flush();
+			return;
+			// FIXME: caller should delete the file that we started writing.
+		}
+		
+		dumpSource(writer, pl, 0.8, 0.2);
+		if (pl != null)
+			pl.updateProgress(1.0, name);
+		writer.flush();
+	}
 }
