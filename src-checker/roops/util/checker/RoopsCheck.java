@@ -138,8 +138,17 @@ public class RoopsCheck extends Options {
 			if (skipClass(clazz))
 				return true;
 
+			GlobalOptions.err.println(className);
+
+			/* The next few lines are the only ones that are changed 
+			 * from the original Jode code. */
+			RoopsClassAnalyzer clazzAna = new RoopsClassAnalyzer(clazz, imports);
+			boolean okay = clazzAna.checkRoopsRules();
+			if (!okay)
+				return true;
+			
 			String filename = 
-				className.replace('.', File.separatorChar)+".java";
+				className.replace('.', File.separatorChar)+".cs";
 			if (destZip != null) {
 				writer.flush();
 				destZip.putNextEntry(new ZipEntry(filename));
@@ -155,17 +164,9 @@ public class RoopsCheck extends Options {
 				(new BufferedOutputStream(new FileOutputStream(file)),
 						imports, false);
 			}
-
-			GlobalOptions.err.println(className);
-
-			/* The next few lines are the only ones that are changed 
-			 * from the original Jode code. */
-			RoopsClassAnalyzer clazzAna = new RoopsClassAnalyzer(clazz, imports);
-			boolean okay = clazzAna.checkRoopsRules();
-			if (okay)
-				clazzAna.dumpJavaFile(writer);
-			/* END changes to code copied from Jode */
-
+			
+			clazzAna.dumpJavaFile(writer);
+			
 			if (destZip != null) {
 				writer.flush();
 				destZip.closeEntry();
