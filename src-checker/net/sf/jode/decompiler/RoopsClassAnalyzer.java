@@ -1,6 +1,7 @@
 package net.sf.jode.decompiler;
 
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.Iterator;
 
 import com.sun.istack.internal.NotNull;
@@ -17,11 +18,17 @@ import net.sf.jode.decompiler.ImportHandler;
 import net.sf.jode.util.SimpleSet;
 
 /**
+ * FIXME: Not nice to put this class in a Jode package
  * 
  * @author csallner@uta.edu (Christoph Csallner)
  */
 public class RoopsClassAnalyzer extends ClassAnalyzer {
 
+  /**
+   * copy-and-paste from super class
+   */
+  protected static int STRICTFP = 0x800;
+	
   /**
    * FIXME: copy-and-paste from super class
    * 
@@ -274,4 +281,83 @@ public class RoopsClassAnalyzer extends ClassAnalyzer {
 			pl.updateProgress(1.0, name);
 		writer.flush();
 	}
+	
+	
+	public void dumpDeclaration(TabbedPrintWriter writer,
+			ProgressListener pl, double done, double scale)
+	throws IOException
+	{
+		if (fields == null) {
+			/* This means that the class could not be loaded.
+			 * give up.
+			 */
+			return;
+		}
+
+		writer.startOp(writer.NO_PAREN, 0);
+		/* Clear the SUPER bit, which is also used as SYNCHRONIZED bit. */
+		int modifiedModifiers = modifiers & ~(Modifier.SYNCHRONIZED
+				| STRICTFP);
+		if (clazz.isInterface())
+			/* interfaces are implicitily abstract */
+			modifiedModifiers &= ~Modifier.ABSTRACT;
+		if (parent instanceof MethodAnalyzer) {
+			/* method scope classes are implicitly private */
+			modifiedModifiers &= ~Modifier.PRIVATE;
+			/* anonymous classes are implicitly final */
+			if (name == null)
+				modifiedModifiers &= ~Modifier.FINAL;
+		}
+		String modif = Modifier.toString(modifiedModifiers);
+		if (modif.length() > 0)
+			writer.print(modif + " ");
+		if (isStrictFP()) {
+			/* The STRICTFP modifier is set.
+			 * We handle it, since java.lang.reflect.Modifier is too dumb.
+			 */
+			writer.print("strictfp ");
+		}
+		/* interface is in modif */
+		if (!clazz.isInterface())
+			writer.print("class ");
+		writer.print(name);
+		ClassInfo superClazz = clazz.getSuperclass();
+		
+		boolean namedSuperClass = false;
+		
+		if (superClazz != null 
+				&& superClazz.getName() != "java.lang.Object") 
+		{
+			writer.breakOp();
+			namedSuperClass = true;	
+			/* replace: "extends X"
+			 * with: ": X" */
+			writer.print(" : " + (writer.getClassString(superClazz, Scope.CLASSNAME)));
+		}
+		ClassInfo[] interfaces = clazz.getInterfaces();
+		if (interfaces.length > 0) {
+			writer.breakOp();
+			
+			if (! namedSuperClass)
+				writer.print(" : ");
+			
+			writer.startOp(writer.EXPL_PAREN, 1);
+			for (int i=0; i < interfaces.length; i++) {
+				if (i > 0 || namedSuperClass) {
+					writer.print(", ");
+					writer.breakOp();
+				}
+				writer.print(writer.getClassString
+						(interfaces[i], Scope.CLASSNAME));
+			}
+			writer.endOp();
+		}
+		writer.println();
+
+		writer.openBraceClass();
+		writer.tab();
+		dumpBlock(writer, pl, done, scale);
+		writer.untab();
+		writer.closeBraceClass();
+	}	
 }
