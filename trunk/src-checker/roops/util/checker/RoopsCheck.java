@@ -8,6 +8,7 @@ import net.sf.jode.decompiler.ClassAnalyzer;
 import net.sf.jode.decompiler.ImportHandler;
 import net.sf.jode.decompiler.Options;
 import net.sf.jode.decompiler.RoopsClassAnalyzer;
+import net.sf.jode.decompiler.RoopsImportHandler;
 import net.sf.jode.decompiler.TabbedPrintWriter;
 import net.sf.jode.GlobalOptions;
 
@@ -375,9 +376,8 @@ public class RoopsCheck extends Options {
 		if (errorInParams)
 			return;
 		classPath = new ClassPath(classPathStr);
-		ImportHandler imports = new ImportHandler(classPath,
-				importPackageLimit,
-				importClassLimit);
+		ImportHandler imports = 
+			new RoopsImportHandler(classPath, importPackageLimit, importClassLimit);
 
 		ZipOutputStream destZip = null;
 		TabbedPrintWriter writer = null;
