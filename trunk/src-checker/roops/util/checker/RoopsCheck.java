@@ -4,7 +4,6 @@ package roops.util.checker;
 import net.sf.jode.bytecode.ClassInfo;
 import net.sf.jode.bytecode.ClassPath;
 import net.sf.jode.bytecode.ClassFormatException;
-import net.sf.jode.decompiler.ClassAnalyzer;
 import net.sf.jode.decompiler.ImportHandler;
 import net.sf.jode.decompiler.Options;
 import net.sf.jode.decompiler.RoopsClassAnalyzer;
@@ -30,9 +29,21 @@ import gnu.getopt.Getopt;
 /**
  * Mostly cut-and-paste from net.sf.jode.decompiler.Main
  * 
+ * <p>Based on the Jode Java-bytecode-to-source-code decompiler:
+ * https://jode.svn.sourceforge.net/svnroot/jode
+ * 
+ * 
+ * TODO: Map Roops Java annotations from Java Bytecode to C# source code.
+ * Problem here is that our underlying decompiler does not seem to
+ * reconstruct annotations.
+ * 
  * @author csallner@uta.edu (Christoph Csallner)
  */
 public class RoopsCheck extends Options {
+	
+	protected static final String copyright = 
+		"RoopsCheck (based on the Jode Java bytecode decompiler)";
+	
 	private static final int OPTION_START=0x10000;
 	private static final int OPTION_END  =0x20000;
 
@@ -139,7 +150,7 @@ public class RoopsCheck extends Options {
 			if (skipClass(clazz))
 				return true;
 
-			GlobalOptions.err.println(className);
+			System.out.println(className);
 
 			/* The next few lines are the only ones that are changed 
 			 * from the original Jode code. */
@@ -256,7 +267,7 @@ public class RoopsCheck extends Options {
 		int outputLineLength = 79;
 		boolean keepGoing = false;
 
-		GlobalOptions.err.println(GlobalOptions.copyright);
+		System.out.println(copyright);
 
 		boolean errorInParams = false;
 		Getopt g = new Getopt("net.sf.jode.decompiler.Main", params, "hVvkc:d:D:i:s:l:",
