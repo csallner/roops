@@ -277,6 +277,10 @@ public class RoopsClassAnalyzer extends ClassAnalyzer {
 		}
 		
 		dumpSource(writer, pl, 0.8, 0.2);
+		
+		// close name space
+		writer.println("}");
+		
 		if (pl != null)
 			pl.updateProgress(1.0, name);
 		writer.flush();

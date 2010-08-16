@@ -28,8 +28,11 @@ public class RoopsImportHandler extends ImportHandler {
 	 * 
 	 * @param classPath
 	 */
-  public RoopsImportHandler(ClassPath classPath, int packageLimit, int classLimit) {
-  	super(classPath, packageLimit, classLimit);
+  public RoopsImportHandler(ClassPath classPath, int packageLimit, int classLimit) 
+  {
+  	/* use package limit of one to always force importing entire package
+  	 * (as C# can only import namespaces, not individual classes) */
+  	super(classPath, 1, classLimit);
   }
 
 	
@@ -147,16 +150,26 @@ public class RoopsImportHandler extends ImportHandler {
 		writer.println(" */");
 		
 		/* replaced: "package X;"
-		 * with: "namespace X;" */
+		 * with: "namespace X {" */
 		if (pkg.length() != 0)
-			writer.println("namespace "+pkg+";");
+			writer.println("namespace "+pkg);
+		
+		// open name space
+		writer.println("{ ");
 
 		cleanUpImports();
 		Iterator iter = imports.keySet().iterator();
 		String lastFirstPart = null;
 		while (iter.hasNext()) {
 			String pkgName = (String)iter.next();
-			if (!pkgName.equals("java.lang.*")) {
+			
+			// using System
+			if (pkgName.equals("java.lang.*")) 
+			{
+				writer.println("using System;");
+			}
+			else 
+			{
 				int firstDot = pkgName.indexOf('.');
 				if (firstDot != -1) {
 					String firstPart = pkgName.substring(0, firstDot);
@@ -166,7 +179,9 @@ public class RoopsImportHandler extends ImportHandler {
 					}
 					lastFirstPart = firstPart;
 				}
-				// following is the only line changed :)
+				// using namespace
+				if (pkgName.endsWith(".*"))
+					pkgName = pkgName.substring(0, pkgName.length()-2);
 				writer.println("using "+pkgName+";");
 			}
 		}
