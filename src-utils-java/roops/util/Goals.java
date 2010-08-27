@@ -20,7 +20,7 @@ public class Goals {
 	}
 	
   /**
-   * className --> (methodName --> goal*))
+   * fully qualified className --> (simple methodName --> goal*))
    */
   private final static Map<String, Map<String, Set<ReachedGoal>>> reachedGoals =
     new HashMap<String, Map<String, Set<ReachedGoal>>>();
@@ -100,25 +100,28 @@ public class Goals {
 	
 	
 	/**
+	 * TODO: distinguish overloaded methods
+	 * 
 	 * @param className fully qualified class name as returned by
 	 * {@link StackTraceElement#getClassName()}.
-	 * @param methodName TODO: distinguish overloaded methods
+	 * @param methodName simple method name 
 	 * 
 	 * @return number of distinct goals reached in className#methodName, 
-	 * since last call to {@link #resetGoals()}.
+	 * since last call to {@link #resetGoals()}. This includes all goals in
+	 * all methods that use the same (overloaded) method name.
 	 */
-//	public static int getNrReachedGoals(String className, String methodName) 
-//	{
-//		int methodGoalCount = 0;
-//	  Map<String,Set<ReachedGoal>> classGoals = reachedGoals.get(className);
-//	  if (classGoals != null)
-//	  {
-//	  	Set<ReachedGoal> methodGoals = classGoals.get(methodName); 
-//	  	methodGoalCount = methodGoals.size();
-//	  }
-//	  
-//	  return methodGoalCount;
-//	}	
+	public static int getNrReachedGoals(String className, String methodName) 
+	{
+	  Map<String,Set<ReachedGoal>> classGoals = reachedGoals.get(className);
+	  if (classGoals == null)
+	  	return 0;
+
+  	Set<ReachedGoal> methodGoals = classGoals.get(methodName);
+  	if (methodGoals == null)
+  		return 0;
+  		
+  	return methodGoals.size();
+	}	
 
 
 	public static String printReachedGoals() {
