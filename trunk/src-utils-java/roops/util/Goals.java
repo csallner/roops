@@ -97,6 +97,28 @@ public class Goals {
 	  
 	  return classGoalCount;
 	}
+	
+	
+	/**
+	 * @param className fully qualified class name as returned by
+	 * {@link StackTraceElement#getClassName()}.
+	 * @param methodName TODO: distinguish overloaded methods
+	 * 
+	 * @return number of distinct goals reached in className#methodName, 
+	 * since last call to {@link #resetGoals()}.
+	 */
+//	public static int getNrReachedGoals(String className, String methodName) 
+//	{
+//		int methodGoalCount = 0;
+//	  Map<String,Set<ReachedGoal>> classGoals = reachedGoals.get(className);
+//	  if (classGoals != null)
+//	  {
+//	  	Set<ReachedGoal> methodGoals = classGoals.get(methodName); 
+//	  	methodGoalCount = methodGoals.size();
+//	  }
+//	  
+//	  return methodGoalCount;
+//	}	
 
 
 	public static String printReachedGoals() {
