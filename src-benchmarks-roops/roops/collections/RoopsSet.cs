@@ -56,6 +56,8 @@ public class RoopsSet<K> {
     }
     
     public boolean add(K key) {
+        if (contains(key))
+        	return false;
         map.put(key, unused);
         return true;
     }
