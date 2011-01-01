@@ -71,7 +71,7 @@ public class IntRedBlackTreeMap {
     //$goals 50
     //$benchmark
     public void putTest(IntRedBlackTreeMap tree, Integer key, Object value) {
-
+        tree.put(key, value);
     }
 
     public void put(Integer key, /*@ nullable @*/ Object value) {
