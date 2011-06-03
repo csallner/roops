@@ -141,7 +141,7 @@ public class FloatArithmetic {
 	public void Method12(float x1, float x2, float x3, float x4, float x5, float x6, float x7, float x8, float x9, float x10, float x11, float x12, float x13, float x14, float x15, float x16, float x17, float x18, float x19, float x20, float x21)
 	{
 	
-	if( x1 != ((x2 + 6.510E19f) * (20.104E18f - ((2.704E25f *(x3 /((73.71E12f * x4) *(x5 / x6)))) - (((x7 - (((419.9E29f /(x8 *((x9 * x10) * 1.7475f))) * x11) * (((30.04E14f - (x12 * x13)) * 953.1f) * 2.182f))) - (x14 * (66.41E11f + (x15 - (((130.77E17f / ((x16 / x17) * (16.796E27f / ((x18 * x19) / ((1.1274E15f - x20) / 295.77E23f))))) * x21) * 17.982f))))) - 224.50E30f))))) {
+		if (x1 != ((x2 + 6.510E19f) * (20.104E18f - ((2.704E25f *(x3 /((73.71E12f * x4) *(x5 / x6)))) - (((x7 - (((419.9E29f /(x8 *((x9 * x10) * 1.7475f))) * x11) * (((30.04E14f - (x12 * x13)) * 953.1f) * 2.182f))) - (x14 * (66.41E11f + (x15 - (((130.77E17f / ((x16 / x17) * (16.796E27f / ((x18 * x19) / ((1.1274E15f - x20) / 295.77E23f))))) * x21) * 17.982f))))) - 224.50E30f))))) {
 			{ /*$goal 0 unknown*/}
 		} else {
 			{ /*$goal 1 unknown*/}
