@@ -207,6 +207,8 @@ public class IntArrayList {
 	}
 
 
+	public IntArrayList() {}
+
 }
 //$endcategory roops.core.objects
 
