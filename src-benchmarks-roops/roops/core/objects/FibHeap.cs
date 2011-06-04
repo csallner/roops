@@ -58,7 +58,7 @@ public class FibHeap {
 		Object[] A = new Object[D];
 		for (int i = 0; i < D; i++) {
 			
-			/*$goal 6 reachable*/
+			{/*$goal  6 reachable*/}
 			A[i] = null;
 		}
 		
@@ -67,44 +67,44 @@ public class FibHeap {
 		FibHeapNode x = min;
 		if (x != null) {
 			
-			/*$goal 7 reachable*/
+			{/*$goal  7 reachable*/}
 			k++;
 			x = x.right;
 			while (x != min) {
 				
-				/*$goal 8 reachable*/
+				{/*$goal  8 reachable*/}
 				k++;
 				x = x.right;
 			}
 		} else {
-			/*$goal 9 unreachable*/
+			{/*$goal  9 unreachable*/}
 		}
 		
 		
 		while (k > 0) {
 			
-			/*$goal 10 reachable*/
+			{/*$goal  10 reachable*/}
 			int d = x.degree;
 			FibHeapNode rightNode = x.right;
 
 			while (A[d] != null) {
 
-				/*$goal 11 reachable*/
+				{/*$goal  11 reachable*/}
 				if (!(A[d] instanceof FibHeapNode)) {
 					
-					/*$goal 12 unreachable*/
+					{/*$goal  12 unreachable*/}
 					throw new RuntimeException();
 				}
 				FibHeapNode y = (FibHeapNode) A[d];
 				
 				if (x.cost > y.cost) {
 
-					/*$goal 13 reachable*/
+					{/*$goal  13 reachable*/}
 					FibHeapNode temp = y;
 					y = x;
 					x = temp;
 				} else {
-				    /*$goal 14 reachable*/
+				    {/*$goal  14 reachable*/}
 					link(y, x);
 				}
 				A[d] = null;
@@ -120,16 +120,16 @@ public class FibHeap {
 		min = null;
 		for (int i = 0; i < D; i++) {
 			
-			/*$goal 15 reachable*/
+			{/*$goal  15 reachable*/}
 			if (A[i] != null) {
 				
-				/*$goal 16 reachable*/
+				{/*$goal  16 reachable*/}
 				if (min != null) {
 
-					/*$goal 17 reachable*/
+					{/*$goal  17 reachable*/}
 					if (!(A[i] instanceof FibHeapNode)) {
 						
-						/*$goal 18 unreachable*/
+						{/*$goal  18 unreachable*/}
 						throw new RuntimeException();
 					} 
 					FibHeapNode node = (FibHeapNode) A[i];
@@ -144,51 +144,51 @@ public class FibHeap {
 						
 
 						if (!(A[i] instanceof FibHeapNode)) {
-							/*$goal 19 unreachable*/
+							{/*$goal  19 unreachable*/}
 							throw new RuntimeException();
 						}						
 						min = (FibHeapNode) A[i];
 						
 					} else {
-						/*$goal 20 reachable*/
+						{/*$goal  20 reachable*/}
 					}
 				} else {
 
-					/*$goal 21 reachable*/
+					{/*$goal  21 reachable*/}
 					if (!(A[i] instanceof FibHeapNode)) {
 						
-						/*$goal 22 unreachable*/
+						{/*$goal  22 unreachable*/}
 						throw new RuntimeException();
 					}
 					min = (FibHeapNode) A[i];
 				}
 			} else {
-				/*$goal 23 reachable*/
+				{/*$goal  23 reachable*/}
 			}
 		}
 		
-		/*$goal 24 reachable*/
+		{/*$goal  24 reachable*/}
 	}
 
 	public FibHeapNode insertNode(FibHeapNode toInsert) {
 		if (min != null) {
 			
-			/*$goal 0 reachable*/
+			{/*$goal  0 reachable*/}
 			toInsert.left = min;
 			toInsert.right = min.right;
 			min.right = toInsert;
 			toInsert.right.left = toInsert;
 			if (toInsert.cost < min.cost) {
 				
-				/*$goal 1 reachable*/
+				{/*$goal  1 reachable*/}
 				min = toInsert;
 			} else {
 
-				/*$goal 2 reachable*/
+				{/*$goal  2 reachable*/}
 			}
 		} else {
 			
-			/*$goal 3 reachable*/
+			{/*$goal  3 reachable*/}
 			min = toInsert;
 
 		}
@@ -221,7 +221,7 @@ public class FibHeap {
 	
 
 	public FibHeapNode minimum() {
-		/*$goal 0 reachable*/
+		{/*$goal  0 reachable*/}
 		return min;
 	}
 
@@ -230,12 +230,12 @@ public class FibHeap {
 		FibHeapNode z = min;
 		if (z != null) {
 			
-			/*$goal 0 reachable*/
+			{/*$goal  0 reachable*/}
 			int i = z.degree;
 			FibHeapNode x = z.child;
 			while (i > 0) {
 
-				/*$goal 1 reachable*/
+				{/*$goal  1 reachable*/}
 				FibHeapNode nextChild = x.right;
 				x.left.right = x.right;
 				x.right.left = x.left;
@@ -248,16 +248,16 @@ public class FibHeap {
 				i--;
 			} 
 			
-			/*$goal 2 reachable*/
+			{/*$goal  2 reachable*/}
 			z.left.right = z.right;
 			z.right.left = z.left;
 			if (z == z.right) {
 
-				/*$goal 3 reachable*/
+				{/*$goal  3 reachable*/}
 				min = null;
 			} else {
 
-				/*$goal 4 reachable*/
+				{/*$goal  4 reachable*/}
 				min = z.right;
 				consolidate();
 			}
@@ -265,7 +265,7 @@ public class FibHeap {
 			n--;
 		}
 		
-		/*$goal 5 reachable*/
+		{/*$goal  5 reachable*/}
 		return z;
 	}
 

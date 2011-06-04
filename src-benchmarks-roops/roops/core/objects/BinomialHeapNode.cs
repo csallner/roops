@@ -104,6 +104,6 @@ public class BinomialHeapNode {
 		return y;
 	}
 
-
+	public BinomialHeapNode() {}
 
 }

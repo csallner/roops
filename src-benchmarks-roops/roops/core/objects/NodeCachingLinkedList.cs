@@ -20,7 +20,7 @@ invariant is provided.
 
 
 //$category roops.core.objects
-
+//$benchmarkclass
 /**
  * @Invariant 
  *		( this.header!=null ) &&
@@ -43,36 +43,50 @@ invariant is provided.
  *				  n.next.previous==n )) ; 
  *
  */
-//$benchmarkclass
 public class NodeCachingLinkedList {
+
+	//$goals 4
+	//$benchmark
+	public void addLastTest(NodeCachingLinkedList list, Object o) {
+		
+		if (list!=null) {
+		  boolean ret_val = list.addLast(o);
+		}
+	}
+
+	//$goals 4
+	//$benchmark
+	public void containsTest(NodeCachingLinkedList list, Object arg) {
+		
+		if (list!=null) {
+		  boolean ret_val = list.contains(arg);
+		}
+	}
 
 	//$goals 11
 	//$benchmark
 	public void removeIndexTest(NodeCachingLinkedList list, int index) {
-		list.removeIndex(index);
+		
+		if (list!=null) {
+		  list.removeIndex(index);
+		}
 	}
 
-	public/*@ nullable @*/ LinkedListNode header;
+	//$goals 5
+	//$benchmark
+	public void setMaximumCacheSizeTest(NodeCachingLinkedList list, int new_maximumCacheSize) {
+		
+		if (list!=null) {
+		  list.setMaximumCacheSize(new_maximumCacheSize);
+		}
+	}
+	
+	public /*@ nullable @*/ LinkedListNode header;
 	public int size;
 	public int modCount;
-
-	public final int DEFAULT_MAXIMUM_CACHE_SIZE = 20;
-
-	/**
-	 * The first cached node, or <code>null</code> if no nodes are cached.
-	 * Cached nodes are stored in a singly-linked list with
-	 * <code>next</code> pointing to the next element.
-	 */
+	public int DEFAULT_MAXIMUM_CACHE_SIZE;
 	public /*@ nullable @*/ LinkedListNode firstCachedNode;
-
-	/**
-	 * The size of the cache.
-	 */
 	public int cacheSize;
-
-	/**
-	 * The maximum size of the cache.
-	 */
 	public int maximumCacheSize;
 
 	//-----------------------------------------------------------------------
@@ -82,20 +96,16 @@ public class NodeCachingLinkedList {
 	 * 
 	 * @return true if the cache is full
 	 */
-	protected boolean isCacheFull() {
+	private boolean isCacheFull() {
 		//return cacheSize >= maximumCacheSize; 
 		return cacheSize > maximumCacheSize; //<- BUG SEEDED
 	}
 
-	/**
-	 * Adds a node to the cache, if the cache isn't full.
-	 * The node's contents are cleared to so they can be garbage collected.
-	 * 
-	 * @param node  the node to add to the cache
-	 */
-	protected void addNodeToCache(LinkedListNode node) {
+	
+
+	private void addNodeToCache(LinkedListNode node) {
 		if (isCacheFull()) {
-			{/*$goal 7 unreachable*/}
+			{/*$goal 7 reachable*/} // UNREACHABLE due to bug-seeded
 			// don't cache the node.
 			return;
 		}
@@ -104,10 +114,12 @@ public class NodeCachingLinkedList {
 		LinkedListNode nextCachedNode = firstCachedNode;
 		node.previous = null;
 		node.next = nextCachedNode;
-		node.setValue(null);
+		node.value = null;
 		firstCachedNode = node;
-		cacheSize++;
-		{/*$goal 8*/}
+		int t = cacheSize;
+		t=t+1;
+		cacheSize=t;
+		{/*$goal 8 reachable*/}
 	}
 
 	/**
@@ -119,17 +131,17 @@ public class NodeCachingLinkedList {
 	private void super_removeNode(LinkedListNode node) {
 		node.previous.next = node.next;
 		node.next.previous = node.previous;
-		size--;
-		modCount++;
+		int t = size;
+		t = t -1;
+		size=t;
+		t = modCount;
+		t = t +1;
+		modCount=t;
 	}
 
-	/**
-	 * Removes the node from the list, storing it in the cache for reuse
-	 * if the cache is not yet full.
-	 * 
-	 * @param node  the node to remove
-	 */
-	protected void removeNode(LinkedListNode node) {
+	
+
+	private void removeNode(LinkedListNode node) {
 		super_removeNode(node);
 		addNodeToCache(node);
 	}
@@ -139,63 +151,61 @@ public class NodeCachingLinkedList {
 	/**
 	 * @Modifies_Everything
 	 */
-	public/*@ nullable @*/Object removeIndex(int index) {
+	public Object removeIndex(int index) {
 
 		LinkedListNode node = getNode(index, false);
-		Object oldValue = node.getValue();
+		Object oldValue = node.value;
 		removeNode(node);
 
 		if (maximumCacheSize==DEFAULT_MAXIMUM_CACHE_SIZE) {
-			{/*$goal 9*/}
+			{/*$goal 9 reachable*/}
 
 			if (cacheSize>maximumCacheSize) {
-				{/*$goal 10*/}
+				{/*$goal 10 reachable*/}
 			}
 		} 
 		return oldValue;
 	}
 
 	//-----------------------------------------------------------------------
-	protected LinkedListNode getNode(int index, boolean endMarkerAllowed)
+	private LinkedListNode getNode(int index, boolean endMarkerAllowed)
 			throws RuntimeException {
 		// Check the index is within the bounds
 		if (index < 0) {
-			{/*$goal 0*/}
+			{/*$goal 0 reachable*/}
 
-			throw new RuntimeException("Couldn't get the node: "
-					+ "index (" + index + ") less than zero.");
+			throw new RuntimeException();
 		}
 		if (!endMarkerAllowed && index == size) {
-			{/*$goal 1*/}
+			{/*$goal 1 reachable*/}
 
-			throw new RuntimeException("Couldn't get the node: "
-					+ "index (" + index + ") is the size of the list.");
+			throw new RuntimeException();
 		}
 		if (index > size) {
-			{/*$goal 2*/}
+			{/*$goal 2 reachable*/}
 
-			throw new IndexOutOfBoundsException("Couldn't get the node: "
-					+ "index (" + index + ") greater than the size of the "
-					+ "list (" + size + ").");
+			throw new IndexOutOfBoundsException();
 		}
 		// Search the list and get the node
 		LinkedListNode node;
-		if (index < (size / 2)) {
-			{/*$goal 3*/}
+		int size_div_2 = size >> 1;
+		
+		if (index < size_div_2) {
+			{/*$goal 3 reachable*/}
 
 			// Search forwards
 			node = header.next;
 			for (int currentIndex = 0; currentIndex < index; currentIndex++) {
-				{/*$goal 4*/}
+				{/*$goal 4 reachable*/}
 				node = node.next;
 			}
 		} else {
-			{/*$goal 5*/}
+			{/*$goal 5 reachable*/}
 
 			// Search backwards
 			node = header;
 			for (int currentIndex = size; currentIndex > index; currentIndex--) {
-				{/*$goal 6*/}
+				{/*$goal 6 reachable*/}
 				node = node.previous;
 			}
 		}
@@ -203,5 +213,150 @@ public class NodeCachingLinkedList {
 	}
 	//-----------------------------------------------------------------------
 
+	private LinkedListNode getNodeFromCache_addLast() {
+		if (cacheSize==0){ 
+			return null;
+		}
+		LinkedListNode cachedNode = firstCachedNode;
+		firstCachedNode = cachedNode.next;
+		cachedNode.next = null;
+		cacheSize--;
+		return cachedNode;
+	}
+	
+	private LinkedListNode super_createNode(Object value) {
+		LinkedListNode ret = new LinkedListNode();
+		ret.value = value;
+		ret.next = ret;
+		ret.previous = ret;
+		return ret;
+	}
+	
+	private LinkedListNode createNode(Object value) {
+		LinkedListNode cachedNode = getNodeFromCache_addLast();
+		if (cachedNode==null) {
+			
+			{/*$goal 0 reachable*/}
+			return super_createNode(value);
+		}
+		
+		{/*$goal 1 reachable*/}
+		cachedNode.value = value;
+		return cachedNode;
+	}
+	
+	
+	public boolean addLast(Object o) {
+		addNodeBefore(header, o);
+		
+		{/*$goal 3 reachable*/}
+		return true;
+	}
+	
+	private void addNodeBefore(LinkedListNode node, Object value) {
+		LinkedListNode newNode = createNode(value);
+		addNode(newNode, node);
+	}
+	
+	private void addNode(LinkedListNode nodeToInsert,
+			LinkedListNode insertBeforeNode) {
+		nodeToInsert.next = insertBeforeNode;
+		nodeToInsert.previous = insertBeforeNode.previous;
+		insertBeforeNode.previous.next = nodeToInsert;
+		insertBeforeNode.previous = nodeToInsert;
+		int t = size;
+		t = t+1;
+		size=t;
+		t = modCount;
+		t = t+1;
+		modCount=t;
+		
+		{/*$goal 2 reachable*/}
+	}
+
+
+
+	public boolean contains(Object arg) {
+		return indexOf(arg) != -1;
+	}
+
+	
+	private int indexOf(Object value) {
+		int i = 0;
+		for (LinkedListNode node = header.next; node != header; node = node.next) {
+			
+		  {/*$goal 0 reachable*/}	
+		  if (isEqualValue(node.value, value)) {
+			  
+			{/*$goal 1 reachable*/}  
+		    return i;
+		  }
+		  
+		  {/*$goal 2 reachable*/}
+	      i++;
+		}
+		
+		{/*$goal 3 reachable*/}
+		return -1;
+	} 
+	
+	
+	private boolean isEqualValue(Object value1, Object value2) {
+		boolean ret_val;
+		if (value1 == value2) {
+			ret_val=true;
+		} else {
+			if (value1==null) {
+				ret_val = false;
+			} else {
+				ret_val = value1.equals(value2);
+			}
+		}
+		return ret_val;
+	}
+	
+	
+	public void setMaximumCacheSize(int new_maximumCacheSize) {
+		this.maximumCacheSize = new_maximumCacheSize;
+		shrinkCacheToMaximumSize();
+	}
+	
+	private void shrinkCacheToMaximumSize() {
+		LinkedListNode node;
+		if (cacheSize<=maximumCacheSize) {
+			{/*$goal 0 reachable*/}
+			return;
+		}
+		
+		while (cacheSize>maximumCacheSize) {
+			
+			{/*$goal 1 reachable*/}
+			node = getNodeFromCache_shrinkCacheToMaximumSize();
+		}
+		
+		{/*$goal 2 reachable*/}
+	}
+	
+	private LinkedListNode getNodeFromCache_shrinkCacheToMaximumSize() {
+		LinkedListNode result;
+		if (cacheSize==0){ 
+	          {/*$goal 3 unreachable*/}
+		  result = null;
+		} else {
+		  {/*$goal 4 reachable*/}
+		  LinkedListNode cachedNode = firstCachedNode;
+		  firstCachedNode = cachedNode.next;
+		  cachedNode.next = null;
+		  int t = cacheSize;
+		  t = t -1;
+		  cacheSize=t;
+		  result = cachedNode;
+		}
+		return result;
+	}
+	
+	public NodeCachingLinkedList() {}
+
 }
-//$endcategory roops.core.objects
+/*$endcategory roops.core.objects */
+

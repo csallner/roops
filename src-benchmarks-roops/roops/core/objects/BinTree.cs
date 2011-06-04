@@ -49,7 +49,7 @@ public class BinTree {
 		BinTreeNode current = root;
 
 		if (root == null) {
-			{/*$ goal 0 reachable */ }
+			{/*$goal 0 reachable*/}
 			root = new BinTreeNode();
 			initNode(root,x);
 			return;
@@ -57,35 +57,35 @@ public class BinTree {
 
 		while (current.key != x) {
 			
-			{/*$ goal 1 reachable */ }
+			{/*$goal 1 reachable*/}
 			
 			if (x < current.key) {
 				
-				{/*$ goal 2 reachable */ }
+				{/*$goal 2 reachable*/}
 				
 				if (current.left == null) {
-					{/*$ goal 3 reachable */ }
+					{/*$goal 3 reachable*/}
 					current.left = new BinTreeNode();
 					initNode(current.left,x);
 				} else {
-					{/*$ goal 4 reachable */ }
+					{/*$goal 4 reachable*/}
 					current = current.left;
 				}
 			} else {
-				{/*$ goal 5 reachable */ }
+				{/*$goal 5 reachable*/}
 				
 				if (current.right == null) {
-					{/*$ goal 6 reachable */ }
+					{/*$goal 6 reachable*/}
 					current.right = new BinTreeNode();
 					initNode(current.right,x);
 				} else {
-					{/*$ goal 7 reachable */ }
+					{/*$goal 7 reachable*/}
 					current = current.right;
 				}
 			}
 		}
 		
-		{/*$ goal 8 reachable */ }
+		{/*$goal 8 reachable*/}
 	}
 
 
@@ -99,33 +99,33 @@ public class BinTree {
 		BinTreeNode current = root;
 
 		while (current != null) {
-			{/*$ goal 0 reachable */ }
+			{/*$goal 0 reachable*/}
 			
 			if (current.key == x) {
-				{/*$ goal 1 reachable */ }
+				{/*$goal 1 reachable*/}
 				return true;
 			}
 
 			if (x < current.key) {
-				{/*$ goal 2 reachable */ }
+				{/*$goal 2 reachable*/}
 				current = current.left;
 			} else {
-				{/*$ goal 3 reachable */ }
+				{/*$goal 3 reachable*/}
 				current = current.right;
 			}
 		}
 
-		{/*$ goal 4 reachable */ }
+		{/*$goal 4 reachable*/}
 		return false;
 	}
 
 	private BinTreeNode treeMinimum(final BinTreeNode x_param) {
 		BinTreeNode x = x_param;
 		while (x.left != null) {
-			{/*$ goal 15 reachable */ }
+			{/*$goal 15 reachable*/}
 			x = x.left;
 		}
-		{/*$ goal 16 reachable */ }
+		{/*$goal 16 reachable*/}
 		return x;
 	}
 
@@ -133,20 +133,20 @@ public class BinTree {
 		BinTreeNode x = x_param;
 		BinTreeNode result;
 		if (x.right != null) {
-			{/*$ goal 11 reachable */ }
+			{/*$goal 11 reachable*/}
 			result = treeMinimum(x.right);
 		} else {
-			{/*$ goal 12 unreachable */ }
+			{/*$goal 12 unreachable*/}
 			BinTreeNode y = x.parent;
 			while (y != null && x == y.right) {
-				{/*$ goal 13 unreachable */ }
+				{/*$goal 13 unreachable*/}
 				x = y;
 				y = y.parent;
 			}
 
 			result = y;
 		}
-		{/*$ goal 14 reachable */ }
+		{/*$goal 14 reachable*/}
 		return result;
 	}
 
@@ -154,47 +154,47 @@ public class BinTree {
 	public BinTreeNode remove(final BinTreeNode z) {
 		BinTreeNode y = null;
 		if (z.left == null || z.right == null) {
-			{/*$ goal 0 reachable */ }
+			{/*$goal 0 reachable*/}
 			y = z;
 		} else {
-			{/*$ goal 1 reachable */ }
+			{/*$goal 1 reachable*/}
 			y = treeSuccessor(z);
 		}
 
 		BinTreeNode x = null;
 		if (y.left != null) {
-			{/*$ goal 2 reachable */ }
+			{/*$goal 2 reachable*/}
 			x = y.left;
 		} else {
-			{/*$ goal 3 reachable */ }
+			{/*$goal 3 reachable*/}
 			x = y.right;
 		}
 
 		if (x != null) {
-			{/*$ goal 4 reachable */ }
+			{/*$goal 4 reachable*/}
 			x.parent = y.parent;
 		}
 
 		if (y.parent == null) {
-			{/*$ goal 5 reachable */ }
+			{/*$goal 5 reachable*/}
 			this.root = x;
 		} else {
-			{/*$ goal 6 reachable */ }
+			{/*$goal 6 reachable*/}
 			if (y == y.parent.left){
-				{/*$ goal 7 reachable */ }
+				{/*$goal 7 reachable*/}
 				y.parent.left = x;
 			}else{
-				{/*$ goal 8 reachable */ }
+				{/*$goal 8 reachable*/}
 				y.parent.right = x;
 			}
 		}
 
 		if (y != z) {
-			{/*$ goal 9 reachable */ }
+			{/*$goal 9 reachable*/}
 			z.key = y.key;
 		}
 
-		{/*$ goal 10 reachable */ }
+		{/*$goal 10 reachable*/}
 		return y;
 	}
 
