@@ -10,19 +10,15 @@ The class has annotations in JFSL [1] given as ROOPS comments.
 [1] http://sdg.csail.mit.edu/forge/plugin.html
 ****************************************************************************/
 
-
-
 //$category roops.core.objects
 
 public class LinkedListNode {
 
-    /** A pointer to the node before this node */
     public /*@ nullable @*/LinkedListNode previous;
-    /** A pointer to the node after this node */
     public /*@ nullable @*/LinkedListNode next;
-    /** The object contained within this node */
     public /*@ nullable @*/Object value;
 
+    public LinkedListNode() {}
 
     public /*@ pure @*/Object getValue() {
         return value;

@@ -23,9 +23,8 @@ ISSTA 2010, to appear.
 
 ***********************************************************************/
 
-
 //$category roops.core.objects
-
+//$benchmarkclass
 /**
  * @Invariant ( all n: BinomialHeapNode | ( n in this.Nodes.*(sibling @+ child) @- null => (
  *		            ( n.parent!=null  => n.key >=  n.parent.key )  &&   
@@ -45,22 +44,51 @@ ISSTA 2010, to appear.
  *  ( n.parent=null ) 
  *  )) ;
  */
-//$benchmarkclass
 public class BinomialHeap {
 
 	//$goals 10
 	//$benchmark
 	public void extractMinTest(BinomialHeap binomialHeap) {
-		binomialHeap.extractMin();
+		
+		if (binomialHeap!=null) {
+		  BinomialHeapNode ret_val = binomialHeap.extractMin();
+		}
 	}
 
+
+	//$goals 3
+	//$benchmark
+	public void findMinTest(BinomialHeap binomialHeap) {
+		
+		if (binomialHeap!=null) {
+		  int ret_val = binomialHeap.findMinimum();
+		}
+	}
+
+	//$goals 3
+	//$benchmark 	
+	public void decreaseKeyNodeTest(BinomialHeap binomialHeap, BinomialHeapNode node, int new_value) {
+		
+		if (binomialHeap!=null ) {
+		  binomialHeap.decreaseKeyNode(node, new_value);
+		}
+	}
+
+	//$goals 22
+	//$benchmark
+	public void insertTest(BinomialHeap binomialHeap, int value) {
+		
+		if (binomialHeap!=null) {
+		  binomialHeap.insert(value);
+		}
+	}
 
 	public /*@ nullable @*/ BinomialHeapNode Nodes;
 
 	public int size;
 
 	// helper procedure
-	private void merge(/*@ nullable @*/BinomialHeapNode binHeap) {
+	private void merge_extractMin(BinomialHeapNode binHeap) {
 
 		BinomialHeapNode temp1 = Nodes, temp2 = binHeap;
 		while ((temp1 != null) && (temp2 != null)) {
@@ -105,8 +133,8 @@ public class BinomialHeap {
 	}
 
 	// another helper procedure
-	private void unionNodes(/*@ nullable @*/BinomialHeapNode binHeap) {
-		merge(binHeap);
+	private void unionNodes_extractMin(BinomialHeapNode binHeap) {
+		merge_extractMin(binHeap);
 
 		BinomialHeapNode prevTemp = null, temp = Nodes , nextTemp = Nodes.sibling;
 		
@@ -140,62 +168,281 @@ public class BinomialHeap {
 		}
 	}
 
-	public /*@ nullable @*/BinomialHeapNode extractMin() {
+	public BinomialHeapNode extractMin() {
 
-		if (Nodes == null)
+		if (Nodes == null) 
 			return null;
 
-                int old_size = size;
+		int old_size = size;
 
 		BinomialHeapNode temp = Nodes, prevTemp = null;
-		BinomialHeapNode minNode = Nodes.findMinNode();
+		BinomialHeapNode minNode = findMinNode_extractMin(Nodes);
 		while (temp.key != minNode.key) {
-			{/*$goal 0*/}
+			{/*$goal 0 reachable*/}
 			prevTemp = temp;
 			temp = temp.sibling;
 		}
 
 		if (prevTemp == null) {
-			{/*$goal 1*/}
+			{/*$goal 1 reachable*/}
 			Nodes = temp.sibling;
 		} else {
-			{/*$goal 2*/}
+			{/*$goal 2 reachable*/}
 			prevTemp.sibling = temp.sibling;
 		}
 		temp = temp.child;
 		BinomialHeapNode fakeNode = temp;
 		while (temp != null) {
-			{/*$goal 3*/}
+			{/*$goal 3 reachable*/}
 			temp.parent = null;
 			temp = temp.sibling;
 		}
 
 		if ((Nodes == null) && (fakeNode == null)) {
-			{/*$goal 4*/}
+			{/*$goal 4 reachable*/}
 			size = 0;
 		} else {
 			if ((Nodes == null) && (fakeNode != null)) {
-				{/*$goal 5*/}
+				{/*$goal 5 reachable*/}
 				Nodes = fakeNode.reverse(null);
 				size--;
 			} else {
-				{/*$goal 6*/}
+				{/*$goal 6 reachable*/}
 				if ((Nodes != null) && (fakeNode == null)) {
-					{/*$goal 7*/}
+					{/*$goal 7 reachable*/}
 					size--;
 				} else {
-					{/*$goal 8*/}
-					unionNodes(fakeNode.reverse(null));
+					{/*$goal 8 reachable*/}
+					unionNodes_extractMin(fakeNode.reverse(null));
 					size--;
 				}
 			}
 		}
  
-		if (this.size==12)
-			{/*$goal 9*/}
-
+		if (this.size==12) {
+			{/*$goal 9 reachable*/}
+		}
 		return minNode;
 	}
 
+	
+	public int findMinimum() {
+		return findMinNode(Nodes).key;
+	}
+	
+	private static BinomialHeapNode findMinNode_extractMin(BinomialHeapNode arg) {
+		BinomialHeapNode x = arg, y = arg;
+		int min = x.key;
+
+		while (x != null) {
+			{/*$goal 0 reachable*/}
+			
+			if (x.key < min) {
+				{/*$goal 1 reachable*/}
+				y = x;
+				min = x.key;
+			}
+			x = x.sibling;
+		}
+
+		{/*$goal 2 reachable*/}
+		return y;
+	}
+
+	private static BinomialHeapNode findMinNode(BinomialHeapNode arg) {
+		BinomialHeapNode x = arg, y = arg;
+		int min = x.key;
+
+		while (x != null) {
+			{/*$goal 0 reachable*/}
+			
+			if (x.key < min) {
+				{/*$goal 1 reachable*/}
+				y = x;
+				min = x.key;
+			}
+			x = x.sibling;
+		}
+
+		{/*$goal 2 reachable*/}
+		return y;
+	}
+
+
+	public void decreaseKeyNode(BinomialHeapNode node, int new_value) {
+		if (node == null) {
+			{/*$goal 0 reachable*/}
+			return;
+		}
+		
+		node.key = new_value;
+		BinomialHeapNode tempParent = node.parent;
+
+		while ((tempParent != null) && (node.key < tempParent.key)) {
+			{/*$goal 1 reachable*/}
+			
+			int z = node.key;
+			node.key = tempParent.key;
+			tempParent.key = z;
+
+			node = tempParent;
+			tempParent = tempParent.parent;
+		}
+		{/*$goal 2 reachable*/}
+	}
+
+	
+
+	public void insert(int value) {
+		if (value > 0) {
+			{/*$goal 0 reachable*/}
+			
+			BinomialHeapNode temp = new BinomialHeapNode();
+			temp.key = value;
+			
+			if (Nodes == null) {
+				{/*$goal 1 reachable*/}
+				
+				Nodes = temp;
+				size = 1;
+			} else {
+				{/*$goal 2 reachable*/}
+				
+				unionNodes_insert(temp);
+				size++;
+			}
+		} else {
+			{/*$goal 21 reachable*/}
+		}
+	}
+
+	// another helper procedure
+	private void unionNodes_insert(BinomialHeapNode binHeap) {
+		merge_insert(binHeap);
+	
+		BinomialHeapNode prevTemp = null, temp = Nodes , nextTemp = Nodes.sibling;
+		
+		while (nextTemp != null) {
+			if ((temp.degree != nextTemp.degree)
+					|| ((nextTemp.sibling != null) && (nextTemp.sibling.degree == temp.degree))) {
+				
+				{/*$goal 14 reachable*/}
+				
+				prevTemp = temp;
+				temp = nextTemp;
+			} else {
+				
+				{/*$goal 15 reachable*/}
+				
+				if (temp.key <= nextTemp.key) {
+					
+					{/*$goal 16 reachable*/}
+					
+					temp.sibling = nextTemp.sibling;
+					nextTemp.parent = temp;
+					nextTemp.sibling = temp.child;
+					temp.child = nextTemp;
+					temp.degree++;
+				} else {
+					
+					{/*$goal 17 reachable*/}
+					
+					if (prevTemp == null) {
+						
+						{/*$goal 18 reachable*/}
+						
+						Nodes = nextTemp;
+					} else {
+						
+						{/*$goal 19 reachable*/}
+						prevTemp.sibling = nextTemp;
+					}
+					temp.parent = nextTemp;
+					temp.sibling = nextTemp.child;
+					nextTemp.child = temp;
+					nextTemp.degree++;
+					temp = nextTemp;
+				}
+			}
+	
+			{/*$goal 20 reachable*/}
+			nextTemp = temp.sibling;
+		}
+	}
+
+	// helper procedure
+	private void merge_insert(BinomialHeapNode binHeap) {
+	
+		BinomialHeapNode temp1 = Nodes, temp2 = binHeap;
+		while ((temp1 != null) && (temp2 != null)) {
+			
+			{/*$goal 3 reachable*/}
+			
+			if (temp1.degree == temp2.degree) {
+				
+				{/*$goal 4 reachable*/}
+				
+				BinomialHeapNode tmp = temp2;
+				temp2 = temp2.sibling;
+				tmp.sibling = temp1.sibling;
+				temp1.sibling = tmp;
+				temp1 = tmp.sibling;
+			} else {
+				
+				{/*$goal 5 reachable*/}
+				
+				if (temp1.degree < temp2.degree) {
+					
+					{/*$goal 6 reachable*/}
+					
+					if ((temp1.sibling == null)
+							|| (temp1.sibling.degree > temp2.degree)) {
+						
+						{/*$goal 7 reachable*/}
+						
+						BinomialHeapNode tmp = temp2;
+						temp2 = temp2.sibling;
+						tmp.sibling = temp1.sibling;
+						temp1.sibling = tmp;
+						temp1 = tmp.sibling;
+					} else {
+						
+						{/*$goal 8 reachable*/}
+						
+						temp1 = temp1.sibling;
+					}
+				} else {
+					{/*$goal 9 reachable*/}
+					
+					BinomialHeapNode tmp = temp1;
+					temp1 = temp2;
+					temp2 = temp2.sibling;
+					temp1.sibling = tmp;
+					if (tmp == Nodes) {
+						{/*$goal 10 reachable*/}
+						Nodes = temp1;
+					} 
+				}
+			}
+		}
+	
+		if (temp1 == null) {
+
+			{/*$goal 11 reachable*/}
+			temp1 = Nodes;
+			while (temp1.sibling != null) {
+
+				{/*$goal 12 reachable*/}
+				temp1 = temp1.sibling;
+			}
+			
+			{/*$goal 13 reachable*/}
+			temp1.sibling = temp2;
+		} 
+	
+	}
+
+	
 }
-//$endcategory roops.core.objects
+/* end roops.core.objects */
+
