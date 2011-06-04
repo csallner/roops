@@ -1,7 +1,7 @@
 //$category roops.core.objects
 
 //Authors: Marcelo Frias
-class BinTreeNode {
+public class BinTreeNode {
 
 	public int key;
 

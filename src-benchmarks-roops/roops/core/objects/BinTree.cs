@@ -26,7 +26,6 @@ public class BinTree {
 	//$goals 5
 	//$benchmark
 	public void findTest(BinTree tree, int x) {
-		declare_literals();
 		boolean ret_val;
 		if (tree!=null) {
 		  ret_val = tree.find(x);
@@ -36,7 +35,6 @@ public class BinTree {
 	//$goals 17
 	//$benchmark
 	public void removeTest(BinTree tree, BinTreeNode z) {
-		declare_literals();
 		BinTreeNode ret_val;
 		if (tree!=null && z!=null) {
 		  ret_val = tree.remove(z);
