@@ -199,5 +199,7 @@ public class BinTree {
 	}
 
 
+	public BinTree() {}
 
 }
+//$endcategory roops.core.objects

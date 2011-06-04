@@ -121,6 +121,8 @@ public class AvlTree {
 		return t;
 	}
 
+	public AvlTree() {}
+
 }
 //$endcategory roops.core.objects
 
