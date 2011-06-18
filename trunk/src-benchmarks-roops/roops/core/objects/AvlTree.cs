@@ -21,9 +21,8 @@ public class AvlTree {
   //$benchmark
   public void findNodeTest(AvlTree tree, int x) {
     	
-    	if (tree!=null) {
-          RoopsContract.assume(tree.repOk());
-          AvlNode ret_val = tree.findNode(x);
+    	if (tree!=null && tree.repOK()) {
+            AvlNode ret_val = tree.findNode(x);
     	}
   }
 
@@ -31,8 +30,7 @@ public class AvlTree {
    //$benchmark
    public void fmaxTest(AvlTree tree) {
 	   
-	   if (tree!=null) {
-             RoopsContract.assume(tree.repOk());
+	   if (tree!=null && tree.repOK()) {
 	     AvlNode ret_val = tree.fmax();
 	   }
    }
@@ -41,8 +39,7 @@ public class AvlTree {
    //$benchmark
    public void fminTest(AvlTree tree) {
 	   
-	   if (tree!=null) {
-             RoopsContract.assume(tree.repOk());
+	   if (tree!=null && tree.repOK()) {
 	     AvlNode ret_val = tree.fmin();
 	   }
    }
@@ -133,7 +130,7 @@ public class AvlTree {
         public boolean repOK() { 
 		RoopsSet allNodes = new RoopsSet();
 		RoopsIntList allData = new RoopsIntList();
-                RoopsStack stack = new Stack();
+                RoopsStack stack = new RoopsStack();
 		if (root != null) {
                   stack.push(root);
                 }
@@ -183,9 +180,6 @@ public class AvlTree {
 
 		}
 		
-		if (allNodes.getSize() != size)
-			return false; // Wrong size.
-
 		if (!isOrdered(root))
 			return false;
 		

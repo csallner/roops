@@ -5,13 +5,13 @@
  * 
  */
 //$category roops.core.objects
-public class RoopsList {
+public class RoopsIntList {
 
     private /*@ nullable @*/ RoopsIntListNode header;
     private int len;
 
     public RoopsIntList() {
-        clear()
+        clear();
     }
 
     public void clear() {
@@ -34,7 +34,7 @@ public class RoopsList {
         return true;
     }
 
-    public boolean remove(int index) {
+    public boolean removeIndex(int index) {
       
         if (index==0) {
           header = header.next;
@@ -54,8 +54,8 @@ public class RoopsList {
         return true;
     }
 
-    public boolean remove(int elem) {
-        return remove(indexOf(elem));
+    public boolean removeElem(int elem) {
+        return removeIndex(indexOf(elem));
     }
 
 

@@ -34,7 +34,7 @@ invariant is provided.
  *		(all m: LinkedListNode | ( m in this.firstCachedNode.*next @- null ) => (
  *				  m !in m.next.*next @- null &&
  *				  m.previous==null &&
- *				  m.value==null )) &&
+ *				  m.object_value==null )) &&
  *		(all n: LinkedListNode | ( n in this.header.*next @- null ) => (
  *				  n!=null &&
  *				  n.previous!=null &&
@@ -49,8 +49,7 @@ public class NodeCachingLinkedList {
 	//$benchmark
 	public void addLastTest(NodeCachingLinkedList list, Object o) {
 		
-		if (list!=null) {
-		  RoopsContract.assume(list.repOk());
+		if (list!=null && list.repOK()) {
 		  boolean ret_val = list.addLast(o);
 		}
 	}
@@ -59,8 +58,7 @@ public class NodeCachingLinkedList {
 	//$benchmark
 	public void containsTest(NodeCachingLinkedList list, Object arg) {
 		
-		if (list!=null) {
-		  RoopsContract.assume(list.repOk());
+		if (list!=null && list.repOK()) {
 		  boolean ret_val = list.contains(arg);
 		}
 	}
@@ -69,8 +67,7 @@ public class NodeCachingLinkedList {
 	//$benchmark
 	public void removeIndexTest(NodeCachingLinkedList list, int index) {
 		
-		if (list!=null) {
-		  RoopsContract.assume(list.repOk());
+		if (list!=null && list.repOK()) {
 		  list.removeIndex(index);
 		}
 	}
@@ -79,8 +76,7 @@ public class NodeCachingLinkedList {
 	//$benchmark
 	public void setMaximumCacheSizeTest(NodeCachingLinkedList list, int new_maximumCacheSize) {
 		
-		if (list!=null) {
-		  RoopsContract.assume(list.repOk());
+		if (list!=null && list.repOK()) {
 		  list.setMaximumCacheSize(new_maximumCacheSize);
 		}
 	}
@@ -118,7 +114,7 @@ public class NodeCachingLinkedList {
 		LinkedListNode nextCachedNode = firstCachedNode;
 		node.previous = null;
 		node.next = nextCachedNode;
-		node.value = null;
+		node.object_value = null;
 		firstCachedNode = node;
 		int t = cacheSize;
 		t=t+1;
@@ -158,7 +154,7 @@ public class NodeCachingLinkedList {
 	public Object removeIndex(int index) {
 
 		LinkedListNode node = getNode(index, false);
-		Object oldValue = node.value;
+		Object oldValue = node.object_value;
 		removeNode(node);
 
 		if (maximumCacheSize==DEFAULT_MAXIMUM_CACHE_SIZE) {
@@ -228,24 +224,24 @@ public class NodeCachingLinkedList {
 		return cachedNode;
 	}
 	
-	private LinkedListNode super_createNode(Object value) {
+	private LinkedListNode super_createNode(Object new_value) {
 		LinkedListNode ret = new LinkedListNode();
-		ret.value = value;
+		ret.object_value = new_value;
 		ret.next = ret;
 		ret.previous = ret;
 		return ret;
 	}
 	
-	private LinkedListNode createNode(Object value) {
+	private LinkedListNode createNode(Object new_value) {
 		LinkedListNode cachedNode = getNodeFromCache_addLast();
 		if (cachedNode==null) {
 			
 			{/*$goal 0 reachable*/}
-			return super_createNode(value);
+			return super_createNode(new_value);
 		}
 		
 		{/*$goal 1 reachable*/}
-		cachedNode.value = value;
+		cachedNode.object_value = new_value;
 		return cachedNode;
 	}
 	
@@ -257,8 +253,8 @@ public class NodeCachingLinkedList {
 		return true;
 	}
 	
-	private void addNodeBefore(LinkedListNode node, Object value) {
-		LinkedListNode newNode = createNode(value);
+	private void addNodeBefore(LinkedListNode node, Object new_value) {
+		LinkedListNode newNode = createNode(new_value);
 		addNode(newNode, node);
 	}
 	
@@ -285,12 +281,12 @@ public class NodeCachingLinkedList {
 	}
 
 	
-	private int indexOf(Object value) {
+	private int indexOf(Object new_value) {
 		int i = 0;
 		for (LinkedListNode node = header.next; node != header; node = node.next) {
 			
 		  {/*$goal 0 reachable*/}	
-		  if (isEqualValue(node.value, value)) {
+		  if (isEqualValue(node.object_value, new_value)) {
 			  
 			{/*$goal 1 reachable*/}  
 		    return i;
@@ -362,10 +358,10 @@ public class NodeCachingLinkedList {
 	public NodeCachingLinkedList() {}
 
    //*************************************************************************
-   //************** From now on repOk()  *************************************
+   //************** From now on repOK()  *************************************
    //*************************************************************************
 
-    public bool repOK()
+    public boolean repOK()
     {
 
         if (this.header == null)
@@ -374,7 +370,7 @@ public class NodeCachingLinkedList {
         if (this.header.next == null)
           return false;
 
-        if (this.header.previous == null);
+        if (this.header.previous == null)
           return false;
 
         if (this.cacheSize > this.maximumCacheSize)
@@ -383,7 +379,7 @@ public class NodeCachingLinkedList {
         if (this.DEFAULT_MAXIMUM_CACHE_SIZE != 20)
           return false;
 
-        if (this.size < 0);
+        if (this.size < 0)
           return false;
 
         int cyclicSize = 0;
@@ -429,7 +425,7 @@ public class NodeCachingLinkedList {
             if (m.previous != null)
               return false;
 
-            if (m.value != null);
+            if (m.object_value != null)
               return false;
 
             m = m.next;

@@ -22,8 +22,7 @@ public class LinkedList {
 	//$goals 3
 	//$benchmark
 	public void addLastTest(LinkedList list, Object o) {
-		if (list!=null) {
-		  RoopsContract.assume(list.repOk());
+		if (list!=null && list.repOK()) {
 		  boolean ret_val = list.addLast(o);
 		}
 	}
@@ -31,8 +30,7 @@ public class LinkedList {
 	//$goals 3
 	//$benchmark
 	public void containsTest(LinkedList list, Object arg) {
-		if (list!=null) {
-		  RoopsContract.assume(list.repOk());
+		if (list!=null && list.repOK()) {
 		  boolean ret_val = list.contains(arg);
 		}
 	}
@@ -40,8 +38,7 @@ public class LinkedList {
 	//$goals 10
 	//$benchmark
 	public void removeIndexTest(LinkedList list, int index) {
-		if (list!=null) {
-		  RoopsContract.assume(list.repOk());
+		if (list!=null && list.repOK()) {
 		  Object ret_val = list.removeIndex(index);
 		}
 	}
@@ -59,11 +56,11 @@ public class LinkedList {
 
 
 	//-----------------------------------------------------------------------
-	private int indexOf(Object value) {
+	private int indexOf(Object new_value) {
 		int i = 0;
 		for (LinkedListNode node = header.next; node != header; node = node.next) {
 			{/*$goal 0 reachable*/}
-			if (isEqualValue(node.value, value)) {
+			if (isEqualValue(node.object_value, new_value)) {
 				{/*$goal 1 reachable*/}
 				return i;
 			}
@@ -81,7 +78,7 @@ public class LinkedList {
 	
 	public Object removeIndex(int index) {
 		LinkedListNode node = getNode(index, false);
-		Object oldValue = node.value;
+		Object oldValue = node.object_value;
 		removeNode(node);
 		
 		{/*$goal 9 reachable*/}
@@ -116,19 +113,19 @@ public class LinkedList {
 	}
 
 
-	private LinkedListNode createNode(Object value) {
+	private LinkedListNode createNode(Object new_object_value) {
 		{/*$goal 0 reachable*/}
 		LinkedListNode node = new LinkedListNode();
 		node.previous = node;
 		node.next = node;
-		node.value = value;
+		node.object_value = new_object_value;
 		return node;
 	}
 
 	
 
-	private void addNodeBefore(LinkedListNode node, Object value) {
-		LinkedListNode newNode = createNode(value);
+	private void addNodeBefore(LinkedListNode node, Object new_object_value) {
+		LinkedListNode newNode = createNode(new_object_value);
 		{/*$goal 1 reachable*/}
 		
 		addNode(newNode, node);
@@ -199,14 +196,14 @@ public class LinkedList {
 	}
 
 	//*************************************************************************
-	//************** From now on repOk()  *************************************
+	//************** From now on repOK()  *************************************
 	//*************************************************************************
 
-        public bool repOK()
+        public boolean repOK()
         {
             if (header == null)
                 return false;
-            if (header.element != null)
+            if (header.object_value != null)
                 return false;
 
             RoopsSet visited = new RoopsSet();
@@ -221,7 +218,7 @@ public class LinkedList {
                 if (next.previous != current)
                     return false;
                 current = next;
-                if (!visited.Add(next))
+                if (!visited.add(next))
                     break;
             }
             if (current != header)
@@ -229,6 +226,7 @@ public class LinkedList {
 
             if (visited.getSize() - 1 != size)
                 return false;
+
             return true;
         }
 

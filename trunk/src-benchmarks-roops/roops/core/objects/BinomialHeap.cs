@@ -442,6 +442,205 @@ public class BinomialHeap {
 	
 	}
 
+	//*************************************************************************
+	//************************* From now on repOk  ****************************
+	//*************************************************************************.
+	
+	public boolean repOk() {
+		RoopsList seen = new RoopsList();
+
+		if (this.Nodes!=null) {
+
+			if (!isAcyclic(this.Nodes, seen))
+				return false;
+			
+			if (!ordered(this.Nodes))
+				return false;
+
+			if (this.Nodes.parent!=null)
+				return false;
+			
+			if (this.Nodes.sibling!=null) {
+				if (this.Nodes.degree >= this.Nodes.sibling.degree)
+					return false;
+			}
+			
+			BinomialHeapNode ns = this.Nodes.sibling; 
+			while (ns != null) {
+
+				if (!isAcyclic(ns, seen))
+					return false;
+		    	  
+				if (ns.parent!=null)
+					return false;
+		    	  
+				if (ns.sibling!=null) {
+		    		  if (ns.degree>=ns.sibling.degree)
+		    			  return false;
+		    	  }
+		    	  
+
+		    	  if (!ordered(ns))
+		    		  return false;
+
+		    	  
+		    	  ns = ns.sibling;
+		      }
+			
+		}
+		
+		int node_count = seen.getSize();
+		
+		if (this.size!=node_count)
+			return false;
+			
+		return true;
+	}
+	
+	private static boolean nodeRepOk(BinomialHeapNode Node) {
+		RoopsList seen = new RoopsList();
+
+		if (Node!=null) {
+
+			if (!isAcyclic(Node, seen))
+				return false;
+			
+			if (!ordered(Node))
+				return false;
+
+			if (Node.parent!=null)
+				return false;
+			
+			if (Node.sibling!=null) {
+				if (Node.degree >= Node.sibling.degree)
+					return false;
+			}
+			
+			BinomialHeapNode ns = Node.sibling; ;
+		    while (ns != null) {
+
+				  if (!isAcyclic(ns, seen))
+				     return false;
+		    	  
+		    	  if (ns.parent!=null)
+		    		  return false;
+		    	  
+		    	  if (ns.sibling!=null) {
+		    		  if (ns.degree>=ns.sibling.degree)
+		    			  return false;
+		    	  }
+		    	  
+		    	  if (!ordered(ns))
+		    		  return false;
+
+		    	  ns = ns.sibling;
+		      }
+			
+		}
+		
+		return true;
+	}
+
+     private static boolean isAcyclic(BinomialHeapNode start, RoopsList seen) {
+
+    	 if (seen.contains(start))
+    		 return false;
+    	 
+    	 if (start.degree<0)
+    		 return false;
+    	 
+    	 seen.add(start);
+    	 
+    	 BinomialHeapNode child = start.child;
+    	 
+    	 int child_count = 0;
+    	 
+    	 while (child!=null) {
+    		 
+    		 child_count++;
+    		 
+        	 if (child.parent != start)
+        		 return false;
+    		 
+    		 if (!isAcyclic(child, seen))
+    			 return false;
+    		 
+    		 if (child.sibling!=null) {
+    			 if (child.degree<=child.sibling.degree)
+    				 return false;
+    		 }
+    		 child = child.sibling;
+    	 }
+    	
+    	 if (start.degree!=child_count)
+    		 return false;
+    	 
+    	 if (start.child!=null) {
+    		 int tam_child=1;
+    		 if (start.child.child!=null) {
+    			 BinomialHeapNode curr = start.child.child;
+    			 while (curr!=null) {
+    			   tam_child+=count_nodes(start.child.child);
+    			   curr = curr.sibling;
+    			 }
+    		 }
+    		 
+    		 int tam_sibling=1;
+    		 if (start.child.sibling!=null) {
+    			 BinomialHeapNode curr = start.child.sibling;
+    			 while (curr!=null) {
+    			   tam_sibling+=count_nodes(start.child.sibling);
+  			       curr = curr.sibling;
+    			 }
+    		 }
+    		 
+    		 if (tam_child!=tam_sibling)
+    			 return false;
+    		 
+    	 }
+    	 
+    	 return true;
+	}
+	
+	private static int count_nodes(BinomialHeapNode start) {
+		
+		int node_count = 1;
+		
+		BinomialHeapNode child = start.child;
+		while (child!=null) {
+			
+			node_count += count_nodes(child);
+			
+			child=child.sibling;
+		}
+		
+		return node_count;
+	}
+
+	private static boolean ordered(final BinomialHeapNode node) {
+		    if (node.child != null) {
+		      if (node.child.key < node.key) {
+		        return false;
+		      }
+		      if (!ordered(node.child)) {
+		        return false;
+		      }
+		      for (BinomialHeapNode ns = node.child.sibling; ns != null; ns = ns.sibling) {
+		        if (ns.key < node.key) {
+		          return false;
+		        }
+		        if (!ordered(ns)) {
+		          return false;
+		        }
+		      }
+		      return true;
+		    } 
+		     
+		    return true;
+		    
+		  }
+
+
 	
 }
 /* end roops.core.objects */

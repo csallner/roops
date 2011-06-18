@@ -11,7 +11,7 @@ public class RoopsList {
     private int len;
 
     public RoopsList() {
-        clear()
+        clear();
     }
 
     public void clear() {
@@ -57,6 +57,7 @@ public class RoopsList {
     public Object get(int index) {
         int i=0;
         RoopsListNode curr = this.header;
+        RoopsListNode prev = null;
         while (i<index) {
           prev = curr;
           curr = curr.next;
