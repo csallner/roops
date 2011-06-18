@@ -158,7 +158,6 @@ public class SinglyLinkedList {
 
             RoopsSet visited = new RoopsSet();
 
-            visited.add(header);
             SinglyLinkedListNode current = header;
 
             while (true)

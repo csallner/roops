@@ -21,7 +21,6 @@ public class RoopsIntList {
 
     public boolean add(int elem) {
         RoopsIntListNode new_node = new RoopsIntListNode(elem);
-        len++;
         if (len==0) {
            header = new_node;
         } else {
@@ -31,6 +30,7 @@ public class RoopsIntList {
            }
            curr.next = new_node;
         }
+        len++;
         return true;
     }
 
