@@ -355,7 +355,13 @@ public class NodeCachingLinkedList {
 		return result;
 	}
 	
-	public NodeCachingLinkedList() {}
+	public NodeCachingLinkedList() {
+          header = new LinkedListNode();
+          header.next = header;
+          header.previous = header; 
+          DEFAULT_MAXIMUM_CACHE_SIZE = 20;
+          maximumCacheSize = DEFAULT_MAXIMUM_CACHE_SIZE;
+        }
 
    //*************************************************************************
    //************** From now on repOK()  *************************************

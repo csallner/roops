@@ -26,7 +26,7 @@ public class FibHeap {
 	//$goals 5
 	//$benchmark
 	public void insertNodeTest(FibHeap fibHeap, FibHeapNode toInsert) {
-		if (fibHeap!=null && toInsert!=null) {
+		if (fibHeap!=null && toInsert!=null && toInsert.left==toInsert && toInsert.right==toInsert && toInsert.parent==null &&  toInsert.child==null && fibHeap.repOK()) {
 		  FibHeapNode ret_val = fibHeap.insertNode(toInsert);
 		}
 	}
@@ -34,7 +34,7 @@ public class FibHeap {
 	//$goals 1
 	//$benchmark
 	public void minimumTest(FibHeap fibHeap) {
-		if (fibHeap!=null) {
+		if (fibHeap!=null && fibHeap.repOK()) {
 		  FibHeapNode ret_val = fibHeap.minimum();
 		}
 	}
@@ -42,7 +42,7 @@ public class FibHeap {
 	//$goals 25
 	//$benchmark
 	public void removeMinTest(FibHeap fibHeap) {
-		if (fibHeap!=null) {
+		if (fibHeap!=null && fibHeap.repOK()) {
 		  FibHeapNode ret_val = fibHeap.removeMin();
 		}
 	}
@@ -269,6 +269,83 @@ public class FibHeap {
 		return z;
 	}
 
+        //*************************************************************************
+        //************** From now on repOK()  *************************************
+        //*************************************************************************
 	
+	public boolean repOK() {
+		RoopsSet allNodes = new RoopsSet();
+		RoopsList parent_headers_to_visit = new RoopsList();
+
+		if (min != null) {
+
+			// check first level 
+			{
+				int child_cound = 0;
+				FibHeapNode curr = min;
+				do  {
+					if (curr.left.right != curr)
+						return false;
+
+					if (curr.parent != null)
+						return false;
+					
+					if (curr.child != null)
+						parent_headers_to_visit.add(curr);
+
+					if (!allNodes.add(curr))
+						return false;// repeated node
+					
+					curr = curr.left;
+					child_cound++;
+				
+				} while (curr!=min);
+				
+			}
+
+			while (!parent_headers_to_visit.isEmpty()) {
+
+				// check other levels 
+
+				FibHeapNode node = (FibHeapNode) parent_headers_to_visit.get(0);
+				parent_headers_to_visit.remove(0);
+
+				int node_count = 0;
+				FibHeapNode curr_node = node.child;
+				do {
+					if (curr_node.left.right != curr_node)
+						return false;
+
+					if (curr_node.parent != null)
+						return false;
+
+					if (curr_node.child != null)
+						parent_headers_to_visit.add(curr_node);
+
+					if (curr_node.cost>node.cost)
+						return false;
+					
+					if (!allNodes.add(curr_node))
+						return false; // repeated node
+					
+					
+					curr_node = curr_node.left;
+					node_count++;
+					
+				} while (curr_node != node.child);
+
+				if (node_count != node.degree)
+					return false;
+
+			}
+
+		}
+
+		if (allNodes.getSize() != this.n)
+			return false;
+
+		return true;
+	}
+
 }
 //$endcategory roops.core.objects

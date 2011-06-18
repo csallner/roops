@@ -700,7 +700,7 @@ public class TreeSet {
 	public boolean repOkKeysAndValues() {
 		int min = repOkfindMin(root);
 		int max = repOkfindMax(root);
-		if (!orderedKeys(root, min, max))
+		if (!orderedKeys(root, min-1, max+1))
 			return false;
 
 		// touch values

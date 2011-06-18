@@ -21,7 +21,6 @@ public class RoopsList {
 
     public boolean add(Object elem) {
         RoopsListNode new_node = new RoopsListNode(elem);
-        len++;
         if (len==0) {
            header = new_node;
         } else {
@@ -31,6 +30,7 @@ public class RoopsList {
            }
            curr.next = new_node;
         }
+        len++;
         return true;
     }
 
