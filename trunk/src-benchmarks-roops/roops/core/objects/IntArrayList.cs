@@ -107,7 +107,7 @@ public class IntArrayList {
 
 			{ /*$goal 5 reachable*/}
 
-			int increment = size >> 1;
+			int increment = size /2;
 
 			if (required > increment) {
 				{ /*$goal 10 reachable*/}
@@ -161,7 +161,7 @@ public class IntArrayList {
 				{ /*$goal 7 reachable*/}
      			int elementIndex = firstIndex + location;
 				result = array[elementIndex];
-				int size_div_2 = size >> 1;
+				int size_div_2 = size /2;
 				if (location < size_div_2) {
 					{ /*$goal 8 reachable*/}
 					system_arraycopy(array, firstIndex, array, firstIndex + 1, location);

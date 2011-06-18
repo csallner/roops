@@ -23,6 +23,7 @@ public class LinkedList {
 	//$benchmark
 	public void addLastTest(LinkedList list, Object o) {
 		if (list!=null) {
+		  RoopsContract.assume(list.repOk());
 		  boolean ret_val = list.addLast(o);
 		}
 	}
@@ -31,6 +32,7 @@ public class LinkedList {
 	//$benchmark
 	public void containsTest(LinkedList list, Object arg) {
 		if (list!=null) {
+		  RoopsContract.assume(list.repOk());
 		  boolean ret_val = list.contains(arg);
 		}
 	}
@@ -39,6 +41,7 @@ public class LinkedList {
 	//$benchmark
 	public void removeIndexTest(LinkedList list, int index) {
 		if (list!=null) {
+		  RoopsContract.assume(list.repOk());
 		  Object ret_val = list.removeIndex(index);
 		}
 	}
@@ -170,7 +173,7 @@ public class LinkedList {
 		}
 		// Search the list and get the node
 		LinkedListNode node;
-		int size_div_2 = size >> 1;
+		int size_div_2 = size /2;
 		
 		if (index < size_div_2) {
 			{/*$goal 3 reachable*/}
@@ -194,6 +197,40 @@ public class LinkedList {
 		{/*$goal 7 reachable*/}
 		return node;
 	}
+
+	//*************************************************************************
+	//************** From now on repOk()  *************************************
+	//*************************************************************************
+
+        public bool repOK()
+        {
+            if (header == null)
+                return false;
+            if (header.element != null)
+                return false;
+
+            RoopsSet visited = new RoopsSet();
+            visited.add(header);
+            LinkedListNode current = header;
+
+            while (true)
+            {
+                LinkedListNode next = current.next;
+                if (next == null)
+                    return false;
+                if (next.previous != current)
+                    return false;
+                current = next;
+                if (!visited.Add(next))
+                    break;
+            }
+            if (current != header)
+                return false;
+
+            if (visited.getSize() - 1 != size)
+                return false;
+            return true;
+        }
 
 
 }
