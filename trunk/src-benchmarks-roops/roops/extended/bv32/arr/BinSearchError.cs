@@ -14,7 +14,7 @@ public class BinSearchError {
 
        public static int binarySearch(int[] a, int key) {
 		int low = 0;
-		int high = a.length - 1;
+		int high = RoopsArray.getLength(a) - 1;
 		int mid;
 		int midVal ;
 		
