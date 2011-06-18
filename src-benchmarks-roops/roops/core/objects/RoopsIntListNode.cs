@@ -1,6 +1,6 @@
 //$category roops.core.objects
 
-public RoopsIntListNode {
+public class RoopsIntListNode {
   
   /*@ nullable @*/ RoopsIntListNode next;  
 

@@ -16,16 +16,16 @@ public class LinkedListNode {
 
     public /*@ nullable @*/LinkedListNode previous;
     public /*@ nullable @*/LinkedListNode next;
-    public /*@ nullable @*/Object value;
+    public /*@ nullable @*/Object object_value;
 
     public LinkedListNode() {}
 
     public /*@ pure @*/Object getValue() {
-        return value;
+        return object_value;
     }
     
-    public void setValue(Object value) {
-        this.value = value;
+    public void setValue(Object new_value) {
+        this.object_value = new_value;
     }
     
     public LinkedListNode getPreviousNode() {

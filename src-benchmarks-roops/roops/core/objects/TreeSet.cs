@@ -49,7 +49,7 @@ public class TreeSet {
 	//$goals 27
 	//$benchmark	
 	public void addTest(TreeSet treeSet, int aKey) {
-		if (treeSet!=null) {
+		if (treeSet!=null && treeSet.repOK()) {
 		  boolean ret_val = treeSet.add(aKey);
 		}
 	}
@@ -57,7 +57,7 @@ public class TreeSet {
 	//$goals 5
 	//$benchmark
 	public void containsTest(TreeSet treeSet, int aKey) {
-		if (treeSet!=null) {
+		if (treeSet!=null && treeSet.repOK()) {
 		  boolean ret_val = treeSet.contains(aKey);
 		}
 	}
@@ -65,7 +65,7 @@ public class TreeSet {
 	//$goals 33
 	//$benchmark
 	public void removeTest(TreeSet treeSet, int aKey) {
-		if (treeSet!=null) {
+		if (treeSet!=null && treeSet.repOK()) {
 		  boolean ret_val = treeSet.remove(aKey);
 		}
 	}
@@ -602,6 +602,150 @@ public class TreeSet {
 			{/*$goal 11 unreachable*/} //always t.right != null
 			return p;
 		}
+	}
+
+	//*************************************************************************
+	//************************* From now on repOk  ****************************
+	//*************************************************************************.
+	public boolean repOK() {
+		if (root == null)
+			return size == 0;
+
+		if (root.parent != null)
+			return false;
+
+		RoopsSet visited = new RoopsSet();
+		visited.add(root);
+		RoopsList workList = new RoopsList();
+		workList.add(root);
+	
+		while (workList.getSize() > 0) {
+
+			TreeSetEntry current = (TreeSetEntry) workList.get(0);
+			workList.remove(0);
+
+			TreeSetEntry cl = current.left;
+			if (cl != null) {
+				if (!visited.add(cl))
+					return false;
+				if (cl.parent != current)
+					return false;
+				workList.add(cl);
+			}
+			TreeSetEntry cr = current.right;
+			if (cr != null) {
+				if (!visited.add(cr))
+					return false;
+				if (cr.parent != current)
+					return false;
+				workList.add(cr);
+			}
+		}
+
+		if (visited.getSize() != size)
+			return false;
+
+		if (!repOkColors())
+			return false;
+
+		return repOkKeysAndValues();
+	}
+
+	public boolean repOkColors() {
+
+		RoopsList workList = new RoopsList();
+		workList.add(root);
+		while (workList.getSize() > 0) {
+			TreeSetEntry current = (TreeSetEntry) workList.get(0);
+			workList.remove(0);
+			TreeSetEntry cl = current.left;
+			TreeSetEntry cr = current.right;
+			if (current.color == RED) {
+				if (cl != null && cl.color == RED)
+					return false;
+				if (cr != null && cr.color == RED)
+					return false;
+			}
+			if (cl != null)
+				workList.add(cl);
+			if (cr != null)
+				workList.add(cr);
+		}
+
+		int numberOfBlack = -1;
+		RoopsList workList2 = new RoopsList();
+		
+		workList2.add(new Pair(root, 0));
+		
+		while (workList2.getSize() > 0) {
+			Pair p = (Pair) workList2.get(0);
+			workList2.remove(0);
+			TreeSetEntry e = p.e;
+			int n = p.n;
+			if (e != null && e.color == BLACK)
+				n++;
+			if (e == null) {
+				if (numberOfBlack == -1)
+					numberOfBlack = n;
+				else if (numberOfBlack != n)
+					return false;
+			} else {
+				workList2.add(new Pair(e.left, n));
+				workList2.add(new Pair(e.right, n));
+			}
+		}
+		return true;
+	}
+
+	public boolean repOkKeysAndValues() {
+		int min = repOkfindMin(root);
+		int max = repOkfindMax(root);
+		if (!orderedKeys(root, min, max))
+			return false;
+
+		// touch values
+		RoopsList workList = new RoopsList();
+		workList.add(root);
+		while (workList.getSize() > 0) {
+			TreeSetEntry current = (TreeSetEntry) workList.get(0);
+			workList.remove(0);
+
+			if (current.left != null)
+				workList.add(current.left);
+			if (current.right != null)
+				workList.add(current.right);
+		}
+		return true;
+	}
+
+	private int repOkfindMin(TreeSetEntry root) {
+		TreeSetEntry curr = root;
+		while (curr.left!=null) {
+			curr = curr.left;
+		}
+		return curr.key;
+	}
+
+	private int repOkfindMax(TreeSetEntry root) {
+		TreeSetEntry curr = root;
+		while (curr.right!=null) {
+			curr = curr.right;
+		}
+		return curr.key;
+	}
+
+	public boolean orderedKeys(TreeSetEntry e, int min, int max) {
+
+		if ((e.key <= min) || (e.key >= max))
+			return false;
+		if (e.left != null)
+			if (!orderedKeys(e.left, min, e.key))
+				return false;
+
+		if (e.right != null)
+			if (!orderedKeys(e.right, e.key, max))
+				return false;
+		return true;
 	}
 
 	

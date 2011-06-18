@@ -18,8 +18,7 @@ public class BinTree {
 	//$goals 9
 	//$benchmark
 	public void addTest(BinTree tree, int x) {
-		if (tree!=null) {
-                  RoopsContract.assume(tree.repOk());
+		if (tree!=null && tree.repOK()) {
 		  tree.add(x);
 		}
 	}
@@ -28,8 +27,7 @@ public class BinTree {
 	//$benchmark
 	public void findTest(BinTree tree, int x) {
 		boolean ret_val;
-		if (tree!=null) {
-                  RoopsContract.assume(tree.repOk());
+		if (tree!=null && tree.repOK()) {
 		  ret_val = tree.find(x);
 		}
 	}
@@ -38,8 +36,7 @@ public class BinTree {
 	//$benchmark
 	public void removeTest(BinTree tree, BinTreeNode z) {
 		BinTreeNode ret_val;
-		if (tree!=null && z!=null) {
-                  RoopsContract.assume(tree.repOk());
+		if (tree!=null && z!=null && tree.repOK()) {
 		  ret_val = tree.remove(z);
 		}
 	}	
@@ -205,10 +202,10 @@ public class BinTree {
 	public BinTree() {}
 
 	//*************************************************************************
-	//************** From now on repOk()  *************************************
+	//************** From now on repOK()  *************************************
 	//*************************************************************************
 
-	public boolean repOk() {
+	public boolean repOK() {
         
           if (root != null) {
 	    // checks that the input is a tree
@@ -231,7 +228,8 @@ public class BinTree {
       workList.add(root);
 		
       while(!workList.isEmpty()) {
-        BinTreeNode current = workList.remove();
+        BinTreeNode current = (BinTreeNode)workList.get(0);
+        workList.remove(0);
         if (current.left != null) {
           if (current.left.parent != current)
             return false;
@@ -255,7 +253,8 @@ public class BinTree {
       RoopsList workList = new RoopsList();
       workList.add(root);
       while (!workList.isEmpty()) {
-        BinTreeNode current = workList.remove();
+        BinTreeNode current = (BinTreeNode)workList.get(0);
+        workList.remove(0);
         if (current.left != null) {
           // checks that the tree has no cycle
           if (visited.contains(current.left))
@@ -281,7 +280,7 @@ public class BinTree {
     private boolean isOrdered(BinTreeNode n) {
         int min = isOrderedMin(n);
         int max = isOrderedMax(n);
-        return isOrdered(n, -1, -1);
+        return isOrdered(n, min, max);
     }
 
     private boolean isOrdered(BinTreeNode n, int min, int max) {
@@ -304,7 +303,7 @@ public class BinTree {
           while (curr.left!=null) {
             curr = curr.left;
           }
-          return curr.element;
+          return curr.key;
         }
 
         private int isOrderedMax(BinTreeNode n) {
@@ -312,7 +311,7 @@ public class BinTree {
           while (curr.right!=null) {
             curr = curr.right;
           }
-          return curr.element;
+          return curr.key;
         }
 
 
