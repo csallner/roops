@@ -14,6 +14,7 @@ public class SinglyLinkedList {
 	public void containsTest(roops.core.objects.SinglyLinkedList list, Object value_param) {
 		boolean ret_val;
 		if (list!=null) {
+		  RoopsContract.assume(list.repOk());
 		  ret_val = list.contains(value_param);
 		}
 	}
@@ -22,6 +23,7 @@ public class SinglyLinkedList {
 	//$benchmark
 	public void insertBackTest(SinglyLinkedList list, Object arg) {
 		if (list!=null) {
+		  RoopsContract.assume(list.repOk());
 		  list.insertBack(arg);
 		}
 	}
@@ -30,13 +32,13 @@ public class SinglyLinkedList {
 	//$benchmark
 	public void removeTest(SinglyLinkedList list, int index) {
 		if (list!=null) {
+		  RoopsContract.assume(list.repOk());
 		  list.remove(index);
 		}
 	}
 
 	
 	public /*@ nullable @*/SinglyLinkedListNode header;
-
 
 
 	
@@ -150,5 +152,32 @@ public class SinglyLinkedList {
 	}
 	
 	public SinglyLinkedList() {}
+
+        //*************************************************************************
+        //************** From now on repOk()  *************************************
+        //*************************************************************************
+
+        public boolean repOK() {
+
+            RoopsSet visited = new RoopsSet();
+
+            visited.add(header);
+            SinglyLinkedListNode current = header;
+
+            while (true)
+            {
+                SinglyLinkedListNode next = current;
+                if (next == null)
+                    break;
+
+                if (!visited.add(next))
+                    return false;
+
+                current = current.next;
+            }
+
+            return true;
+        }
+
 }
 //$endcategory roops.core.objects

@@ -19,6 +19,7 @@ public class BinTree {
 	//$benchmark
 	public void addTest(BinTree tree, int x) {
 		if (tree!=null) {
+                  RoopsContract.assume(tree.repOk());
 		  tree.add(x);
 		}
 	}
@@ -28,6 +29,7 @@ public class BinTree {
 	public void findTest(BinTree tree, int x) {
 		boolean ret_val;
 		if (tree!=null) {
+                  RoopsContract.assume(tree.repOk());
 		  ret_val = tree.find(x);
 		}
 	}
@@ -37,6 +39,7 @@ public class BinTree {
 	public void removeTest(BinTree tree, BinTreeNode z) {
 		BinTreeNode ret_val;
 		if (tree!=null && z!=null) {
+                  RoopsContract.assume(tree.repOk());
 		  ret_val = tree.remove(z);
 		}
 	}	
@@ -200,6 +203,118 @@ public class BinTree {
 
 
 	public BinTree() {}
+
+	//*************************************************************************
+	//************** From now on repOk()  *************************************
+	//*************************************************************************
+
+	public boolean repOk() {
+        
+          if (root != null) {
+	    // checks that the input is a tree
+            if (!isAcyclic())
+              return false;
+            
+            // checks that data is ordered
+            if (!isOrdered(root))
+              return false;
+
+            // checks parents
+            if(!parentsAllRight())
+              return false;
+          }
+          return true;
+        }
+    
+    private boolean parentsAllRight() {
+      RoopsList workList = new RoopsList();
+      workList.add(root);
+		
+      while(!workList.isEmpty()) {
+        BinTreeNode current = workList.remove();
+        if (current.left != null) {
+          if (current.left.parent != current)
+            return false;
+          else
+            workList.add(current.left);
+        }
+        if (current.right != null) {
+          if (current.right.parent != current)
+            return false;
+          else
+            workList.add(current.right);
+        }
+      }
+		
+      return true;
+    }
+
+    private boolean isAcyclic() {
+      RoopsList visited = new RoopsList();
+      visited.add(root);
+      RoopsList workList = new RoopsList();
+      workList.add(root);
+      while (!workList.isEmpty()) {
+        BinTreeNode current = workList.remove();
+        if (current.left != null) {
+          // checks that the tree has no cycle
+          if (visited.contains(current.left))
+            return false;
+          else
+            visited.add(current.left);
+
+          workList.add(current.left);
+        }
+        if (current.right != null) {
+          // checks that the tree has no cycle
+          if (visited.contains(current.right))
+            return false;
+          else
+	    visited.add(current.right);
+
+          workList.add(current.right);
+        }
+      }
+      return true;
+    }
+
+    private boolean isOrdered(BinTreeNode n) {
+        int min = isOrderedMin(n);
+        int max = isOrderedMax(n);
+        return isOrdered(n, -1, -1);
+    }
+
+    private boolean isOrdered(BinTreeNode n, int min, int max) {
+        if ((n.key <= (min)) || (n.key >= (max)))
+          return false;
+			
+        if (n.left != null)
+          if (!isOrdered(n.left, min, n.key))
+             return false;
+                
+        if (n.right != null)
+          if (!isOrdered(n.right, n.key, max))
+             return false;
+                
+        return true;
+    }
+
+        private int isOrderedMin(BinTreeNode n) {
+          BinTreeNode curr = n;
+          while (curr.left!=null) {
+            curr = curr.left;
+          }
+          return curr.element;
+        }
+
+        private int isOrderedMax(BinTreeNode n) {
+          BinTreeNode curr = n;
+          while (curr.right!=null) {
+            curr = curr.right;
+          }
+          return curr.element;
+        }
+
 
 }
 //$endcategory roops.core.objects
