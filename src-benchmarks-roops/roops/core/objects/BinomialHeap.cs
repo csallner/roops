@@ -50,7 +50,7 @@ public class BinomialHeap {
 	//$benchmark
 	public void extractMinTest(BinomialHeap binomialHeap) {
 		
-		if (binomialHeap!=null) {
+		if (binomialHeap!=null && binomialHeap.repOK()) {
 		  BinomialHeapNode ret_val = binomialHeap.extractMin();
 		}
 	}
@@ -60,7 +60,7 @@ public class BinomialHeap {
 	//$benchmark
 	public void findMinTest(BinomialHeap binomialHeap) {
 		
-		if (binomialHeap!=null) {
+		if (binomialHeap!=null && binomialHeap.repOK()) {
 		  int ret_val = binomialHeap.findMinimum();
 		}
 	}
@@ -69,7 +69,7 @@ public class BinomialHeap {
 	//$benchmark 	
 	public void decreaseKeyNodeTest(BinomialHeap binomialHeap, BinomialHeapNode node, int new_value) {
 		
-		if (binomialHeap!=null ) {
+		if (binomialHeap!=null && binomialHeap.repOK()) {
 		  binomialHeap.decreaseKeyNode(node, new_value);
 		}
 	}
@@ -78,7 +78,7 @@ public class BinomialHeap {
 	//$benchmark
 	public void insertTest(BinomialHeap binomialHeap, int value) {
 		
-		if (binomialHeap!=null) {
+		if (binomialHeap!=null && binomialHeap.repOK()) {
 		  binomialHeap.insert(value);
 		}
 	}
@@ -443,18 +443,18 @@ public class BinomialHeap {
 	}
 
 	//*************************************************************************
-	//************************* From now on repOk  ****************************
+	//************************* From now on repOK  ****************************
 	//*************************************************************************.
 	
-	public boolean repOk() {
+	public boolean repOK() {
 		RoopsList seen = new RoopsList();
 
 		if (this.Nodes!=null) {
 
-			if (!isAcyclic(this.Nodes, seen))
+			if (!repOK_isAcyclic(this.Nodes, seen))
 				return false;
 			
-			if (!ordered(this.Nodes))
+			if (!repOK_ordered(this.Nodes))
 				return false;
 
 			if (this.Nodes.parent!=null)
@@ -468,7 +468,7 @@ public class BinomialHeap {
 			BinomialHeapNode ns = this.Nodes.sibling; 
 			while (ns != null) {
 
-				if (!isAcyclic(ns, seen))
+				if (!repOK_isAcyclic(ns, seen))
 					return false;
 		    	  
 				if (ns.parent!=null)
@@ -480,7 +480,7 @@ public class BinomialHeap {
 		    	  }
 		    	  
 
-		    	  if (!ordered(ns))
+		    	  if (!repOK_ordered(ns))
 		    		  return false;
 
 		    	  
@@ -497,15 +497,15 @@ public class BinomialHeap {
 		return true;
 	}
 	
-	private static boolean nodeRepOk(BinomialHeapNode Node) {
+	private static boolean repOK_nodeRepOk(BinomialHeapNode Node) {
 		RoopsList seen = new RoopsList();
 
 		if (Node!=null) {
 
-			if (!isAcyclic(Node, seen))
+			if (!repOK_isAcyclic(Node, seen))
 				return false;
 			
-			if (!ordered(Node))
+			if (!repOK_ordered(Node))
 				return false;
 
 			if (Node.parent!=null)
@@ -519,7 +519,7 @@ public class BinomialHeap {
 			BinomialHeapNode ns = Node.sibling; ;
 		    while (ns != null) {
 
-				  if (!isAcyclic(ns, seen))
+				  if (!repOK_isAcyclic(ns, seen))
 				     return false;
 		    	  
 		    	  if (ns.parent!=null)
@@ -530,7 +530,7 @@ public class BinomialHeap {
 		    			  return false;
 		    	  }
 		    	  
-		    	  if (!ordered(ns))
+		    	  if (!repOK_ordered(ns))
 		    		  return false;
 
 		    	  ns = ns.sibling;
@@ -541,7 +541,7 @@ public class BinomialHeap {
 		return true;
 	}
 
-     private static boolean isAcyclic(BinomialHeapNode start, RoopsList seen) {
+     private static boolean repOK_isAcyclic(BinomialHeapNode start, RoopsList seen) {
 
     	 if (seen.contains(start))
     		 return false;
@@ -562,7 +562,7 @@ public class BinomialHeap {
         	 if (child.parent != start)
         		 return false;
     		 
-    		 if (!isAcyclic(child, seen))
+    		 if (!repOK_isAcyclic(child, seen))
     			 return false;
     		 
     		 if (child.sibling!=null) {
@@ -580,7 +580,7 @@ public class BinomialHeap {
     		 if (start.child.child!=null) {
     			 BinomialHeapNode curr = start.child.child;
     			 while (curr!=null) {
-    			   tam_child+=count_nodes(start.child.child);
+    			   tam_child+= repOK_count_nodes(start.child.child);
     			   curr = curr.sibling;
     			 }
     		 }
@@ -589,7 +589,7 @@ public class BinomialHeap {
     		 if (start.child.sibling!=null) {
     			 BinomialHeapNode curr = start.child.sibling;
     			 while (curr!=null) {
-    			   tam_sibling+=count_nodes(start.child.sibling);
+    			   tam_sibling+= repOK_count_nodes(start.child.sibling);
   			       curr = curr.sibling;
     			 }
     		 }
@@ -602,14 +602,14 @@ public class BinomialHeap {
     	 return true;
 	}
 	
-	private static int count_nodes(BinomialHeapNode start) {
+	private static int repOK_count_nodes(BinomialHeapNode start) {
 		
 		int node_count = 1;
 		
 		BinomialHeapNode child = start.child;
 		while (child!=null) {
 			
-			node_count += count_nodes(child);
+			node_count += repOK_count_nodes(child);
 			
 			child=child.sibling;
 		}
@@ -617,19 +617,19 @@ public class BinomialHeap {
 		return node_count;
 	}
 
-	private static boolean ordered(final BinomialHeapNode node) {
+	private static boolean repOK_ordered(final BinomialHeapNode node) {
 		    if (node.child != null) {
 		      if (node.child.key < node.key) {
 		        return false;
 		      }
-		      if (!ordered(node.child)) {
+		      if (!repOK_ordered(node.child)) {
 		        return false;
 		      }
 		      for (BinomialHeapNode ns = node.child.sibling; ns != null; ns = ns.sibling) {
 		        if (ns.key < node.key) {
 		          return false;
 		        }
-		        if (!ordered(ns)) {
+		        if (!repOK_ordered(ns)) {
 		          return false;
 		        }
 		      }

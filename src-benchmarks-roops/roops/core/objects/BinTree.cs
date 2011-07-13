@@ -209,21 +209,21 @@ public class BinTree {
         
           if (root != null) {
 	    // checks that the input is a tree
-            if (!isAcyclic())
+            if (!repOK_isAcyclic())
               return false;
             
             // checks that data is ordered
-            if (!isOrdered(root))
+            if (!repOK_isOrdered(root))
               return false;
 
             // checks parents
-            if(!parentsAllRight())
+            if(!repOK_parentsAllRight())
               return false;
           }
           return true;
         }
     
-    private boolean parentsAllRight() {
+    private boolean repOK_parentsAllRight() {
       RoopsList workList = new RoopsList();
       workList.add(root);
 		
@@ -247,7 +247,7 @@ public class BinTree {
       return true;
     }
 
-    private boolean isAcyclic() {
+    private boolean repOK_isAcyclic() {
       RoopsList visited = new RoopsList();
       visited.add(root);
       RoopsList workList = new RoopsList();
@@ -277,28 +277,28 @@ public class BinTree {
       return true;
     }
 
-    private boolean isOrdered(BinTreeNode n) {
-        int min = isOrderedMin(n);
-        int max = isOrderedMax(n);
-        return isOrdered(n, min, max);
+    private boolean repOK_isOrdered(BinTreeNode n) {
+        int min = repOK_isOrderedMin(n);
+        int max = repOK_isOrderedMax(n);
+        return repOK_isOrdered(n, min, max);
     }
 
-    private boolean isOrdered(BinTreeNode n, int min, int max) {
+    private boolean repOK_isOrdered(BinTreeNode n, int min, int max) {
         if ((n.key <= (min)) || (n.key >= (max)))
           return false;
 			
         if (n.left != null)
-          if (!isOrdered(n.left, min, n.key))
+          if (!repOK_isOrdered(n.left, min, n.key))
              return false;
                 
         if (n.right != null)
-          if (!isOrdered(n.right, n.key, max))
+          if (!repOK_isOrdered(n.right, n.key, max))
              return false;
                 
         return true;
     }
 
-        private int isOrderedMin(BinTreeNode n) {
+        private int repOK_isOrderedMin(BinTreeNode n) {
           BinTreeNode curr = n;
           while (curr.left!=null) {
             curr = curr.left;
@@ -306,7 +306,7 @@ public class BinTree {
           return curr.key;
         }
 
-        private int isOrderedMax(BinTreeNode n) {
+        private int repOK_isOrderedMax(BinTreeNode n) {
           BinTreeNode curr = n;
           while (curr.right!=null) {
             curr = curr.right;
