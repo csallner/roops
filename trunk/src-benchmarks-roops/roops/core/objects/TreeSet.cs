@@ -645,13 +645,13 @@ public class TreeSet {
 		if (visited.getSize() != size)
 			return false;
 
-		if (!repOkColors())
+		if (!repOK_Colors())
 			return false;
 
-		return repOkKeysAndValues();
+		return repOK_KeysAndValues();
 	}
 
-	public boolean repOkColors() {
+	public boolean repOK_Colors() {
 
 		RoopsList workList = new RoopsList();
 		workList.add(root);
@@ -697,10 +697,10 @@ public class TreeSet {
 		return true;
 	}
 
-	public boolean repOkKeysAndValues() {
-		int min = repOkfindMin(root);
-		int max = repOkfindMax(root);
-		if (!orderedKeys(root, min-1, max+1))
+	public boolean repOK_KeysAndValues() {
+		int min = repOK_findMin(root);
+		int max = repOK_findMax(root);
+		if (!repOK_orderedKeys(root, min-1, max+1))
 			return false;
 
 		// touch values
@@ -718,7 +718,7 @@ public class TreeSet {
 		return true;
 	}
 
-	private int repOkfindMin(TreeSetEntry root) {
+	private int repOK_findMin(TreeSetEntry root) {
 		TreeSetEntry curr = root;
 		while (curr.left!=null) {
 			curr = curr.left;
@@ -726,7 +726,7 @@ public class TreeSet {
 		return curr.key;
 	}
 
-	private int repOkfindMax(TreeSetEntry root) {
+	private int repOK_findMax(TreeSetEntry root) {
 		TreeSetEntry curr = root;
 		while (curr.right!=null) {
 			curr = curr.right;
@@ -734,16 +734,16 @@ public class TreeSet {
 		return curr.key;
 	}
 
-	public boolean orderedKeys(TreeSetEntry e, int min, int max) {
+	public boolean repOK_orderedKeys(TreeSetEntry e, int min, int max) {
 
 		if ((e.key <= min) || (e.key >= max))
 			return false;
 		if (e.left != null)
-			if (!orderedKeys(e.left, min, e.key))
+			if (!repOK_orderedKeys(e.left, min, e.key))
 				return false;
 
 		if (e.right != null)
-			if (!orderedKeys(e.right, e.key, max))
+			if (!repOK_orderedKeys(e.right, e.key, max))
 				return false;
 		return true;
 	}

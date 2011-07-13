@@ -180,40 +180,40 @@ public class AvlTree {
 
 		}
 		
-		if (!isOrdered(root))
+		if (!repOK_isOrdered(root))
 			return false;
 		
 		
 		return true;
 	}
 
-        private boolean isOrdered(AvlNode n) {
+        private boolean repOK_isOrdered(AvlNode n) {
             if (n==null)
               return true;
 
-            int min = isOrderedMin(n);
-            int max = isOrderedMax(n);
+            int min = repOK_isOrderedMin(n);
+            int max = repOK_isOrderedMax(n);
 
-            return isOrdered(n, min, max);
+            return repOK_isOrdered(n, min, max);
         }
 
-        private boolean isOrdered(AvlNode n, int min, int max) {
+        private boolean repOK_isOrdered(AvlNode n, int min, int max) {
 
             if ((n.element<min ) || (n.element>max))
                 return false;
 
             if (n.left != null) {
-                if (!isOrdered(n.left, min, n.element))
+                if (!repOK_isOrdered(n.left, min, n.element))
                     return false;
             }
             if (n.right != null) {
-                if (!isOrdered(n.right, n.element, max))
+                if (!repOK_isOrdered(n.right, n.element, max))
                     return false;
             }
             return true;
         }
 
-        private int isOrderedMin(AvlNode n) {
+        private int repOK_isOrderedMin(AvlNode n) {
           AvlNode curr = n;
           while (curr.left!=null) {
             curr = curr.left;
@@ -221,7 +221,7 @@ public class AvlTree {
           return curr.element;
         }
 
-        private int isOrderedMax(AvlNode n) {
+        private int repOK_isOrderedMax(AvlNode n) {
           AvlNode curr = n;
           while (curr.right!=null) {
             curr = curr.right;
