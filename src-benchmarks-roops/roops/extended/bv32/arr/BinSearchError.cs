@@ -22,7 +22,7 @@ public class BinSearchError {
 			mid = (low + high) /2;
 
                         if (mid<0) {
-                          /*$goal 0 reachable*/
+                          {/*$goal 0 reachable*/}
                         }
 
 			midVal = a[mid];
