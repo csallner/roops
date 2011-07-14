@@ -10,7 +10,7 @@ public class ArrayList {
 
 	//$goals 6
 	//$benchmark
-	public void containsTest(ArrayList arrayList, int o) {
+	public void containsTest(ArrayList arrayList, Object o) {
 		if (arrayList != null) {
 			{ /*$goal 0 reachable*/}
 			boolean ret_val = arrayList.contains(o);
@@ -32,7 +32,7 @@ public class ArrayList {
 
 	//$goals 18
 	//$benchmark
-	public void addTest(ArrayList arrayList, int o) {
+	public void addTest(ArrayList arrayList, Object o) {
 		if (arrayList != null) {
 			{ /*$goal 0 reachable*/}
 			boolean ret_val = arrayList.add(o);
