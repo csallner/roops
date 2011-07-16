@@ -8,6 +8,20 @@ public class IntArrayWithoutExceptions
     #region Basic
     //$goals 3
     //$benchmark
+    public void BigArrayManyUpdates0(int k)
+    {
+        int[] a = new int[10];
+        for (int i = 0; i < RoopsArray.getLength(a); i++)
+            a[i] = i;
+        if (k >= 0 && k < RoopsArray.getLength(a) &&
+            a[k] == 50)
+        { /*$goal 0*/}
+        else
+        { /*$goal 1*/}
+    }
+
+    //$goals 3
+    //$benchmark
     public void BigArrayManyUpdates1(int k)
     {
         int[] a = new int[100];
